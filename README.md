@@ -31,14 +31,18 @@ Keep track and collect data for your brews. [Add more description]
 ## Todo
 | Status    | Description |
 | :-------: | ----------- | 
-| :x:       | 
+| :x:       | Add error messages for validation error
+| :x:       | Add user profile and link it in header when logged in
+| :x:       | Add password reset
 
 ---
 
 ## Improvments
 | Status    | Description |
 | :-------: | ----------- | 
-| :x:       | 
+| :x:       | Extend token lifetime
+| :x:       | Create logo & identity, make a theme of it
+| :x:       | Router transitions for more fluid ux
 
 ---
 
@@ -46,3 +50,6 @@ Keep track and collect data for your brews. [Add more description]
 You are very welcome to add contribute to the project. Follow these steps.
 #### Installation
 - Clone this project from git, in terminal run `git clone https://github.com/martinlundin/brewy-firebase.git`
+- In package.json add your url to proxy
+
+[Todo make comprehensive insallation guide]
