@@ -46,8 +46,9 @@ Keep track and collect data for your brews. [Add more description]
 
 ---
 
-## Development
-You are very welcome to add contribute to the project. Follow these steps.
+## Contribute
+You are very welcome to contribute to the project. Follow these steps to install for development.
+
 #### Installation
 - Clone this project from git, in terminal run `git clone https://github.com/martinlundin/brewy-firebase.git`
 - In package.json add your url to proxy
