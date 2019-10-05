@@ -17,6 +17,7 @@ import Register from './pages/Register'
 
 //Import components 
 import Header from './components/Header'
+import Global from './components/Global'
 import { logoutUserAction, getCurrentUserDataAction } from './redux/actions/userActions';
 import { SET_AUTHENTICATED } from './redux/types';
 import Axios from 'axios'
@@ -43,6 +44,7 @@ export default function App() {
         <Provider store={store}>
           <Router>
             <Header/>
+            <Global/>
             <Switch>
               <Route exact path="/" component={Home}/>
               <AuthRoute exact path="/login" component={Login}/>

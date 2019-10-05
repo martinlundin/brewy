@@ -13,7 +13,6 @@ export const loginUserAction = (userData) => (dispatch) => {
     .then((response) => {
         setAuthorizationHeader(response.data.token)
         dispatch(getCurrentUserDataAction())
-        dispatch({ type: CLEAR_ERRORS })
     })
     .catch((error) => {
         dispatch({
@@ -29,7 +28,6 @@ export const registerUserAction = (userData) => (dispatch) => {
     .then((response) => {
         setAuthorizationHeader(response.data.token)
         dispatch(getCurrentUserDataAction())
-        dispatch({ type: CLEAR_ERRORS })
     })
     .catch((error) => {
         dispatch({
@@ -48,9 +46,16 @@ export const logoutUserAction = () => (dispatch) => {
 export const getCurrentUserDataAction = () => (dispatch) => {
     Axios.get('/user')
     .then(response => {
+        dispatch({ type: CLEAR_ERRORS })
         dispatch({
             type: SET_USER,
             payload: response.data
+        })
+    })
+    .catch((error) => {
+        dispatch({
+            type: SET_ERRORS,
+            payload: error.response.data,
         })
     })
 }

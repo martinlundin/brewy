@@ -98,10 +98,6 @@ export default function Login() {
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
@@ -116,9 +112,7 @@ export default function Login() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link to="#" variant="body2">
-                Forgot password?
-              </Link>
+              {/* Add "forgot password?" here */}
             </Grid>
             <Grid item>
               <Link to="/register" variant="body2">

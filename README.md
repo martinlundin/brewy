@@ -8,10 +8,10 @@ Keep track and collect data for your brews. [Add more description]
 | Pages                 | Status                | Description |
 | --------------------- | :-------------------: | ----------- | 
 | `/`                   | :soon:                | Home page, feed of popular and new brews, if logged in display your latest brews |
-| `/login`              | :soon:                | Login form page |
-| `/register`           | :soon:                | Register form page |
+| `/login`              | :white_check_mark:    | Login form page |
+| `/register`           | :white_check_mark:    | Register form page |
 | `/user/:userId`       | :x:                   | User profile, show edit buttons for fields if user is logged in and own the user|
-| `/brew`               | :x:                   | Start new brew here |
+| `/brew`               | :soon:                | Start new brew here |
 | `/brew/:brewId`       | :x:                   | Show brew and all its data, show edit button for fields if user is logged in and own brew |
 
 ## Components
@@ -21,9 +21,9 @@ Keep track and collect data for your brews. [Add more description]
 | `BrewFeed`            | :x:                   | Shows feed of brews, different queries/results depending on what props is pushed in |
 | `BrewSlider`          | :x:                   | Shows a slider of brews, similar to BrewFeed, but horizontal scroll |
 | `BrewPreview`         | :x:                   | Preview of brew, this is used in BrewFeed & BrewSlider |
-| `CreateBrew`          | :x:                   | Form for creating new brew |
-| `FixedButton`         | :x:                   | Button in fixed position on screen |
-| `Header`              | :x:                   | Just a header |
+| `CreateBrew`          | :soon:                | Form for creating new brew |
+| `FixedButton`         | :soon:                | Button in fixed position on screen |
+| `Header`              | :white_check_mark:    | Just a header |
 | `Footer`              | :x:                   | Just a footer |
 
 ---
