@@ -14,6 +14,7 @@ import AuthRoute from './util/AuthRoute'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import CreateBrew from './pages/CreateBrew'
 
 //Import components 
 import Header from './components/Header'
@@ -49,6 +50,7 @@ export default function App() {
               <Route exact path="/" component={Home}/>
               <AuthRoute exact path="/login" component={Login}/>
               <AuthRoute exact path="/register" component={Register}/>
+              <Route exact path="/brew" component={CreateBrew}/>
             </Switch>
           </Router>
         </Provider>
