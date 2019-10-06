@@ -115,7 +115,7 @@ export default function CreateBrew() {
                                 <MenuItem value={"Cider"}>Cider</MenuItem>
                                 <MenuItem value={"Kefir"}>Kefir</MenuItem>
                                 <MenuItem value={"Kombucha"}>Kombucha</MenuItem>
-                                <MenuItem value={"Meed"}>Meed</MenuItem>
+                                <MenuItem value={"Mead"}>Mead</MenuItem>
                                 <MenuItem value={"Wine"}>Wine</MenuItem>
                             </Select>
                         </FormControl>
