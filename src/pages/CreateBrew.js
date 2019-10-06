@@ -11,7 +11,7 @@ import generatePattern from '../util/pattern'
 import { useDispatch } from 'react-redux'
 import Axios from 'axios'
 import { SET_ERRORS } from '../redux/types'
-
+import Processes from '../components/Processes'
 
 export default function CreateBrew() {
     const useStyles = makeStyles(theme => ({
@@ -25,6 +25,7 @@ export default function CreateBrew() {
         },
         formControl: {
             width: "100%",
+            margin: theme.spacing(3, 0),
         },
         avatar: {
             marginLeft: "auto",
@@ -119,6 +120,7 @@ export default function CreateBrew() {
                                 <MenuItem value={"Wine"}>Wine</MenuItem>
                             </Select>
                         </FormControl>
+                        <Processes brewId={brewId}/>
                     </form>
                 </Grid>
             </Paper>
