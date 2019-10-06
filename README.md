@@ -22,7 +22,6 @@ Keep track and collect data for your brews. [Add more description]
 | `BrewSlider`          | :x:                   | Shows a slider of brews, similar to BrewFeed, but horizontal scroll |
 | `BrewPreview`         | :x:                   | Preview of brew, this is used in BrewFeed & BrewSlider |
 | `CreateBrew`          | :soon:                | Form for creating new brew |
-| `FixedButton`         | :soon:                | Button in fixed position on screen |
 | `Header`              | :white_check_mark:    | Just a header |
 | `Footer`              | :x:                   | Just a footer |
 
