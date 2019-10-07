@@ -33,6 +33,14 @@ export default function ControlledExpansionPanels(props) {
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+  const handleInput = (key, value) => {
+      switch(key){
+          case 'type':
+              setType(value);
+              break;
+          default:        
+      }
+  }
 
   return (
     <div className={classes.root}>
@@ -48,7 +56,7 @@ export default function ControlledExpansionPanels(props) {
                 <InputLabel htmlFor="type">Type</InputLabel>
                 <Select
                 value={type}
-                onChange={e => setType(e.target.value)}
+                onChange={e => handleInput('type', e.target.value)}
                 inputProps={{
                     name: 'type',
                     id: 'type',
@@ -56,11 +64,10 @@ export default function ControlledExpansionPanels(props) {
                 >
                     <MenuItem value={""}><em>None</em></MenuItem>
                     <MenuItem value={"Fermentation"}>Fermentation</MenuItem>
-                    <MenuItem value={"Second Fermentatation"}>Second Fermentation</MenuItem>
                     <MenuItem value={"Cooling"}>Cooling</MenuItem>
                 </Select>
             </FormControl>
-            
+
         </ExpansionPanelDetails>
       </ExpansionPanel>
 
