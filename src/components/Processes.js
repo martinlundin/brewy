@@ -10,6 +10,15 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 
+import 'date-fns';
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  DateTimePicker,
+} from '@material-ui/pickers';
+
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -20,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 0,
   },
   formControl: {
-      width: "100%",
+      width: "50%",
   }
 }));
 
@@ -41,6 +50,13 @@ export default function ControlledExpansionPanels(props) {
           default:        
       }
   }
+
+  // The first commit of Material-UI
+  const [startedAt, setStartedAt] = React.useState(new Date());
+
+  const handleDateChange = date => {
+    ;
+  };
 
   return (
     <div className={classes.root}>
@@ -67,7 +83,17 @@ export default function ControlledExpansionPanels(props) {
                     <MenuItem value={"Cooling"}>Cooling</MenuItem>
                 </Select>
             </FormControl>
-
+            <FormControl className={classes.formControl}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DateTimePicker
+                autoOk
+                ampm={false}
+                value={startedAt}
+                onChange={e => setStartedAt(e)}
+                label="Process started at"
+              />
+              </MuiPickersUtilsProvider>
+            </FormControl>
         </ExpansionPanelDetails>
       </ExpansionPanel>
 
