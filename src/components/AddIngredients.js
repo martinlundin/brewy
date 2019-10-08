@@ -79,11 +79,12 @@ function getSuggestionValue(suggestion) {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: 250,
     flexGrow: 1,
+    display: 'flex',
   },
   container: {
     position: 'relative',
+    marginTop: theme.spacing(2),
   },
   suggestionsContainerOpen: {
     position: 'absolute',
@@ -107,29 +108,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function AddIngredients() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [state, setState] = React.useState({
-    single: '',
-    popper: '',
-  });
 
   const [stateSuggestions, setSuggestions] = React.useState([]);
-
   const handleSuggestionsFetchRequested = ({ value }) => {
     setSuggestions(getSuggestions(value));
   };
-
   const handleSuggestionsClearRequested = () => {
     setSuggestions([]);
   };
-
-  const handleChange = name => (event, { newValue }) => {
-    setState({
-      ...state,
-      [name]: newValue,
-    });
-  };
-
   const autosuggestProps = {
     renderInputComponent,
     suggestions: stateSuggestions,
@@ -139,17 +125,27 @@ export default function AddIngredients() {
     renderSuggestion,
   };
 
+  const [ingredient, setIngredient] = React.useState('')
+  const handleIngredient = name => (event, { newValue }) => {
+    setIngredient(newValue);
+  };
+
+
+  const [amount, setAmount] = React.useState('')
+  const [measurement, setMeasurement] = React.useState('')
+  const handleMeasurement = name => (event, { newValue }) => {
+    setMeasurement(newValue);
+  };
+
   return (
     <div className={classes.root}>
       <Autosuggest
         {...autosuggestProps}
         inputProps={{
           classes,
-          id: 'react-autosuggest-simple',
           label: 'Ingredient',
-          placeholder: 'Add ingredient',
-          value: state.single,
-          onChange: handleChange('single'),
+          value: ingredient,
+          onChange: handleIngredient(),
         }}
         theme={{
           container: classes.container,
@@ -162,6 +158,22 @@ export default function AddIngredients() {
             {options.children}
           </Paper>
         )}
+      />
+      <TextField
+        label="Amount"
+        value={amount}
+        onChange={e => setAmount(e.target.value)}
+        type="number"
+        className={classes.textField}
+        margin="normal"
+      />
+      <TextField
+        label="Measurement"
+        value={measurement}
+        onChange={e => setMeasurement(e.target.value)}
+        type="text"
+        className={classes.textField}
+        margin="normal"
       />
     </div>
   );

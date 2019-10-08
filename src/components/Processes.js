@@ -28,6 +28,9 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
       width: "50%",
+  },
+  expansionDetails: {
+    flexFlow: 'wrap' 
   }
 }));
 
@@ -59,7 +62,7 @@ export default function ControlledExpansionPanels(props) {
             <Typography className={classes.heading}>{type}</Typography>
         </ExpansionPanelSummary>
         
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails className={classes.expansionDetails}>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="type">Type</InputLabel>
                 <Select
