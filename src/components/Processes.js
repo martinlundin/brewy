@@ -15,6 +15,7 @@ import {
   MuiPickersUtilsProvider,
   DateTimePicker,
 } from '@material-ui/pickers';
+import AddIngredients from './AddIngredients'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -85,6 +86,7 @@ export default function ControlledExpansionPanels(props) {
               />
               </MuiPickersUtilsProvider>
             </FormControl>
+            <AddIngredients/>
         </ExpansionPanelDetails>
       </ExpansionPanel>
 
