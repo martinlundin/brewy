@@ -1,10 +1,11 @@
 import React from 'react'
 import Axios from 'axios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { SET_ERRORS } from './../redux/types'
 import generatePattern from '../util/pattern'
 import BrewTile from './BrewTile'
 import { BrewContext } from './../pages/Brewery'
+import { LOADING_UI, CLEAR_ERRORS } from './../redux/types'
 
 // MUI
 import FormControl from '@material-ui/core/FormControl'
@@ -22,6 +23,7 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles(theme => ({
@@ -70,6 +72,7 @@ const useStyles = makeStyles(theme => ({
 export default function StartBrew() {
     const dispatch = useDispatch()
     const classes = useStyles()
+    const ui = useSelector((state) => state.ui)
 
     const [brew, setBrew] = React.useContext(BrewContext)
     React.useEffect(() => {
@@ -77,8 +80,10 @@ export default function StartBrew() {
     }, [])
 
     const FBCreateBrew = (data) => {
+        dispatch({ type: LOADING_UI })
         Axios.post('/brew', data)
         .then((response) => {
+            dispatch({ type: CLEAR_ERRORS })
             let brewId = response.data.id
             setBrew(prev => ({ ...prev, brewId}))
             window.history.pushState({}, document.title, `/brewery/${brewId}`);
@@ -157,10 +162,13 @@ export default function StartBrew() {
                                 onClick={() => FBCreateBrew({
                                     pattern: brew.pattern,
                                     category: brew.category,
-                                    date: brew.date,
+                                    date: brew.date.toISOString(),
                                 })}
                                 >
                                     Start
+                                    {ui.loading && (
+                                        <CircularProgress size={20} className={classes.loadingIcon}/>
+                                    )}
                                 </Button>
                             </FormControl>
 

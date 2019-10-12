@@ -6,12 +6,12 @@ export const BrewContext = React.createContext();
 
 export default function Brewery(props) {
     // Date as closest hour
-    const d = new Date()
-    d.setMinutes (d.getMinutes() + 30);
-    d.setMinutes (0);
+    const date = new Date()
+    date.setMinutes(date.getMinutes() + 30);
+    date.setMinutes(0);
     const [brew, setBrew] = React.useState({
         brewId: props.match.params.brewId,
-        date: d,
+        date,
         category: '',
         pattern: ''
     })
