@@ -31,7 +31,7 @@ export default function Home() {
     return (
         <div className={classes.home}>
             <h1>Home</h1>
-            <Link to="/brew">
+            <Link to="/brewery">
                 <Fab variant="extended" aria-label="Create new brew" className={classes.fab}>
                     <AddIcon className={classes.addIcon} />
                     Start new brew

@@ -11,8 +11,9 @@ Keep track and collect data for your brews. [Add more description]
 | `/login`              | :white_check_mark:    | Login form page |
 | `/register`           | :white_check_mark:    | Register form page |
 | `/user/:userId`       | :x:                   | User profile, show edit buttons for fields if user is logged in and own the user|
-| `/brew`               | :soon:                | Start new brew here |
-| `/brew/:brewId`       | :x:                   | Show brew and all its data, show edit button for fields if user is logged in and own brew |
+| `/brewery`            | :soon:                | Welcome to the brewery, start a new brew or pick up where you left on the previous |
+| `/brewery/:brewId`    | :soon:                | Edit page of specific brew |
+| `/brew/:brewId`       | :x:                   | Show brew and all its data, show edit button for fields if user is logged in and own the brew |
 
 ## Components
 
@@ -20,8 +21,10 @@ Keep track and collect data for your brews. [Add more description]
 | --------------------- | :-------------------: | ----------- | 
 | `BrewFeed`            | :x:                   | Shows feed of brews, different queries/results depending on what props is pushed in |
 | `BrewSlider`          | :x:                   | Shows a slider of brews, similar to BrewFeed, but horizontal scroll |
-| `BrewPreview`         | :x:                   | Preview of brew, this is used in BrewFeed & BrewSlider |
-| `CreateBrew`          | :soon:                | Form for creating new brew |
+| `BrewTile`            | :soon:                | Preview of brew, this is used in BrewFeed & BrewSlider |
+| `StartBrew`           | :soon:                | Form for starting a new brew |
+| `BrewProcesses`       | :soon:                | Form for modifying processes on a brew |
+| `ProcessIngredients`  | :soon:                | Form for modifying ingredients on a process |
 | `Header`              | :white_check_mark:    | Just a header |
 | `Footer`              | :x:                   | Just a footer |
 
@@ -30,7 +33,7 @@ Keep track and collect data for your brews. [Add more description]
 ## Todo
 | Status    | Description |
 | :-------: | ----------- | 
-| :x:       | Add error messages for validation error
+| :x:       | Remove redux and replace it with the react Context API
 | :x:       | Add user profile and link it in header when logged in
 | :x:       | Add password reset
 
