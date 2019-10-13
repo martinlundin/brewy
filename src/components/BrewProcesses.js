@@ -119,47 +119,45 @@ export default function BrewProcesses(props) {
     }, [])
     
     return (
-        <Grid container justify={"center"} className={classes.container}>
-            <Container maxWidth="sm">
-                <GridList className={classes.gridList} >
-                    <BrewTile pattern={brew.pattern} title={brew.category} date={brew.date.getDate()} month={brew.date.toLocaleString('default', {month: 'short'}).toLowerCase()}/>
-                </GridList>
-                    <Grid item xs={12} className={classes.formGrid}>
-                        {ui.loading && 
-                            <div className={classes.loadingIconWrap}>
-                                <CircularProgress size={20} className={classes.loadingIcon}/>
-                            </div> 
-                        }
-                        <form autoComplete="off" >
+        <Container className={classes.container} maxWidth="sm">
+            <GridList className={classes.gridList} >
+                <BrewTile pattern={brew.pattern} title={brew.category} date={brew.date.getDate()} month={brew.date.toLocaleString('default', {month: 'short'}).toLowerCase()}/>
+            </GridList>
+                <Grid item xs={12} className={classes.formGrid}>
+                    {ui.loading && 
+                        <div className={classes.loadingIconWrap}>
+                            <CircularProgress size={20} className={classes.loadingIcon}/>
+                        </div> 
+                    }
+                    <form autoComplete="off" >
 
-                            {brew.processes &&
-                                brew.processes.map(process => (
-                                    <ProcessForm 
-                                    key={process.processId}
-                                    expanded={expanded} 
-                                    handleChange={handleChange.bind()} 
-                                    process={process}
-                                    />
-                            ))}
-                            <ProcessForm expanded={expanded} handleChange={handleChange.bind()}/>
+                        {brew.processes &&
+                            brew.processes.map(process => (
+                                <ProcessForm 
+                                key={process.processId}
+                                expanded={expanded} 
+                                handleChange={handleChange.bind()} 
+                                process={process}
+                                />
+                        ))}
+                        <ProcessForm expanded={expanded} handleChange={handleChange.bind()}/>
 
-                        </form>
-                           
-                    </Grid>
-                <Paper className={classes.infoPaper}>
-                    <Typography variant="h5"><InfoOutlinedIcon />Every practice was a learning process</Typography>
-                    <Typography paragraph={true}>When you do something with your brew, add a process here to keep track on what works best.</Typography>
-                </Paper>
-                <FormControl className={classes.stepping}>
-                    <Button  
-                    className={classes.steppingButton} 
-                    variant="contained" 
-                    color="secondary" 
-                    >
-                        Complete brew
-                    </Button>
-                </FormControl>
-            </Container>
-        </Grid>
+                    </form>
+                        
+                </Grid>
+            <Paper className={classes.infoPaper}>
+                <Typography variant="h5"><InfoOutlinedIcon />Every practice was a learning process</Typography>
+                <Typography paragraph={true}>When you do something with your brew, add a process here to keep track on what works best.</Typography>
+            </Paper>
+            <FormControl className={classes.stepping}>
+                <Button  
+                className={classes.steppingButton} 
+                variant="contained" 
+                color="secondary" 
+                >
+                    Complete brew
+                </Button>
+            </FormControl>
+        </Container>
     )
 }

@@ -96,89 +96,87 @@ export default function StartBrew() {
     }
 
     return (
-        <Grid container justify={"center"} className={classes.container}>
-            <Container maxWidth="sm">
-                <GridList className={classes.gridList} >
-                    <BrewTile pattern={brew.pattern} title={brew.category} date={brew.date.getDate()} month={brew.date.toLocaleString('default', {month: 'short'}).toLowerCase()}/>
-                </GridList>
-                <Paper className={classes.paper}>
-                    <Grid item xs={12}>
-                        <form autoComplete="off" >
-                            <Button 
-                            variant="outlined" 
-                            color="secondary" 
-                            className={classes.patternButton} 
-                            onClick={() => setBrew(prev => ({ ...prev, 
-                                pattern: generatePattern()
+        <Container className={classes.container} maxWidth="sm">
+            <GridList className={classes.gridList} >
+                <BrewTile pattern={brew.pattern} title={brew.category} date={brew.date.getDate()} month={brew.date.toLocaleString('default', {month: 'short'}).toLowerCase()}/>
+            </GridList>
+            <Paper className={classes.paper}>
+                <Grid item xs={12}>
+                    <form autoComplete="off" >
+                        <Button 
+                        variant="outlined" 
+                        color="secondary" 
+                        className={classes.patternButton} 
+                        onClick={() => setBrew(prev => ({ ...prev, 
+                            pattern: generatePattern()
+                        }))}
+                        >
+                            Generate pattern
+                        </Button>
+                        
+                        <FormControl className={classes.formControl}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DateTimePicker
+                                    autoOk
+                                    ampm={false}
+                                    value={brew.date}
+                                    onChange={date => setBrew(prev => ({ ...prev, 
+                                        date: date
+                                    }))}
+                                    label="Date"
+                                    views={['date', 'hours']}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </FormControl>
+
+                        <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="category">Category</InputLabel>
+
+                            <Select
+                            value={brew.category}
+                            onChange={e => setBrew(prev => ({ ...prev, 
+                                category: e.target.value
                             }))}
+                            inputProps={{
+                                name: 'category',
+                                id: 'category',
+                            }}
                             >
-                                Generate pattern
+                                <MenuItem value={""}><em>None</em></MenuItem>
+                                <MenuItem value={"Beer"}>Beer</MenuItem>
+                                <MenuItem value={"Cider"}>Cider</MenuItem>
+                                <MenuItem value={"Kefir"}>Kefir</MenuItem>
+                                <MenuItem value={"Kombucha"}>Kombucha</MenuItem>
+                                <MenuItem value={"Mead"}>Mead</MenuItem>
+                                <MenuItem value={"Wine"}>Wine</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <FormControl className={classes.stepping}>
+                            <Button  
+                            className={classes.steppingButton} 
+                            variant="contained" 
+                            color="secondary" 
+                            onClick={() => FBCreateBrew({
+                                pattern: brew.pattern,
+                                category: brew.category,
+                                date: brew.date.toISOString(),
+                            })}
+                            >
+                                Start
+                                {ui.loading && (
+                                    <CircularProgress size={20} className={classes.loadingIcon}/>
+                                )}
                             </Button>
-                            
-                            <FormControl className={classes.formControl}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <DateTimePicker
-                                        autoOk
-                                        ampm={false}
-                                        value={brew.date}
-                                        onChange={date => setBrew(prev => ({ ...prev, 
-                                            date: date
-                                        }))}
-                                        label="Date"
-                                        views={['date', 'hours']}
-                                    />
-                                </MuiPickersUtilsProvider>
-                            </FormControl>
+                        </FormControl>
 
-                            <FormControl className={classes.formControl}>
-                                <InputLabel htmlFor="category">Category</InputLabel>
-
-                                <Select
-                                value={brew.category}
-                                onChange={e => setBrew(prev => ({ ...prev, 
-                                    category: e.target.value
-                                }))}
-                                inputProps={{
-                                    name: 'category',
-                                    id: 'category',
-                                }}
-                                >
-                                    <MenuItem value={""}><em>None</em></MenuItem>
-                                    <MenuItem value={"Beer"}>Beer</MenuItem>
-                                    <MenuItem value={"Cider"}>Cider</MenuItem>
-                                    <MenuItem value={"Kefir"}>Kefir</MenuItem>
-                                    <MenuItem value={"Kombucha"}>Kombucha</MenuItem>
-                                    <MenuItem value={"Mead"}>Mead</MenuItem>
-                                    <MenuItem value={"Wine"}>Wine</MenuItem>
-                                </Select>
-                            </FormControl>
-
-                            <FormControl className={classes.stepping}>
-                                <Button  
-                                className={classes.steppingButton} 
-                                variant="contained" 
-                                color="secondary" 
-                                onClick={() => FBCreateBrew({
-                                    pattern: brew.pattern,
-                                    category: brew.category,
-                                    date: brew.date.toISOString(),
-                                })}
-                                >
-                                    Start
-                                    {ui.loading && (
-                                        <CircularProgress size={20} className={classes.loadingIcon}/>
-                                    )}
-                                </Button>
-                            </FormControl>
-
-                        </form>
-                    </Grid>
-                </Paper>
-                <Paper className={classes.infoPaper}>
-                    <Typography variant="h5"><InfoOutlinedIcon /> All masterpieces starts somewhere</Typography>
-                    <Typography paragraph={true}>And this is where you start yours. Give the brew a date and a category. The pattern is as a placeholder, you will be able to add an image and name the brew when it is completed.</Typography>
-                </Paper>
-            </Container>
-        </Grid>
+                    </form>
+                </Grid>
+            </Paper>
+            <Paper className={classes.infoPaper}>
+                <Typography variant="h5"><InfoOutlinedIcon /> All masterpieces starts somewhere</Typography>
+                <Typography paragraph={true}>And this is where you start yours. Give the brew a date and a category. The pattern is as a placeholder, you will be able to add an image and name the brew when it is completed.</Typography>
+            </Paper>
+        </Container>
     )
 }

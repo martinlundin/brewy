@@ -25,7 +25,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ProcessIngredientForm from './ProcessIngredientsForm'
+import ProcessIngredientForm from './ProcessIngredientForm'
+import ProcessIngredients from './ProcessIngredients'
 
 const useStyles = makeStyles(theme => ({
     heading: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles(theme => ({
         width: "100%",
     },
     expansionDetails: {
-        flexFlow: 'wrap' 
+        flexFlow: 'wrap',
     },
     stepping: {
         width: '100%',
@@ -66,6 +67,7 @@ export default function ProcessForm(props) {
         ...props.process,
         type: (props.process && props.process.type ? props.process.type : ''),
         startedAt: (props.process && props.process.startedAt ? props.process.startedAt : date),
+        ingredients: (props.process && props.process.ingredients ? props.process.ingredients : []),
     })
     
     const [changed, setChanged] = React.useState(false)
@@ -151,7 +153,7 @@ export default function ProcessForm(props) {
     return (
         <ExpansionPanel expanded={props.expanded === key} onChange={props.handleChange(key)}>
 
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <ExpansionPanelSummary className={classes.expansionSummary} expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>{(changed && process.processId && <span>&#9679;</span>)} {process.startedAt.getDate()} {process.startedAt.toLocaleString('default', {month: 'short'})}</Typography>
                 <Typography className={classes.secondaryHeading}>{process.type}</Typography>
             </ExpansionPanelSummary>
@@ -188,12 +190,14 @@ export default function ProcessForm(props) {
                 
                 {process.ingredients &&
                     process.ingredients.map(ingredient => (
-                        <ProcessIngredientForm 
+                        <ProcessIngredients
                         key={ingredient.ingredientId}
-                        
+                        name={ingredient.name}
+                        amount={ingredient.amount}
+                        measurement={ingredient.measurement}
                         />
                 ))}
-                <ProcessIngredientForm/>
+                <ProcessIngredientForm processId={process.processId}/>
 
                 <FormControl className={classes.stepping}>
                     <Button  
