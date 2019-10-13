@@ -135,6 +135,7 @@ export default function BrewProcesses(props) {
                             {brew.processes &&
                                 brew.processes.map(process => (
                                     <ProcessForm 
+                                    key={process.processId}
                                     expanded={expanded} 
                                     handleChange={handleChange.bind()} 
                                     processId={process.processId} 
