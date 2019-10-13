@@ -25,6 +25,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ProcessIngredientForm from './ProcessIngredientsForm'
 
 const useStyles = makeStyles(theme => ({
     heading: {
@@ -61,10 +62,14 @@ export default function ProcessForm(props) {
     date.setMinutes(date.getMinutes() + 30);
     date.setMinutes(0);
 
-    const [type, setType] = React.useState((props.type ? props.type : ''))
-    const [startedAt, setStartedAt] = React.useState((props.startedAt ? props.startedAt : date))
+    const [process, setProcess] = React.useState({ 
+        ...props.process,
+        type: (props.process && props.process.type ? props.process.type : ''),
+        startedAt: (props.process && props.process.startedAt ? props.process.startedAt : date),
+    })
+    
     const [changed, setChanged] = React.useState(false)
-    const [key, setKey] = React.useState((props.processId ? props.processId : 'new'))
+    const [key, setKey] = React.useState((props.process && props.process.processId ? props.process.processId : 'new'))
 
     const FBCreateProcess = (data) => {
         dispatch({ type: LOADING_UI })
@@ -112,22 +117,31 @@ export default function ProcessForm(props) {
     }
     const handleSubmit = () => {
         setChanged(false)
-        if(props.processId){
+        if(process.processId){
             FBUpdateProcess({
-                processId: props.processId,
+                processId: process.processId,
                 brewId: brew.brewId,
-                type,
-                startedAt: startedAt.toISOString(),
+                type: process.type,
+                startedAt: process.startedAt.toISOString(),
             })
         } else {
             FBCreateProcess({
                 brewId: brew.brewId,
-                type,
-                startedAt: startedAt.toISOString(),
+                type: process.type,
+                startedAt: process.startedAt.toISOString(),
             })
-            setStartedAt(date)
-            setType('')
+            setProcess({
+                type: '',
+                startedAt: date, 
+            }) 
         }
+    }
+    const handleChange = (key, value) => {
+        setChanged(true)
+        setProcess(prev => ({
+            ...prev,
+            [key]: value,
+        }))
     }
 
     React.useEffect(() => {
@@ -138,8 +152,8 @@ export default function ProcessForm(props) {
         <ExpansionPanel expanded={props.expanded === key} onChange={props.handleChange(key)}>
 
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.heading}>{(changed && props.processId && <span>&#9679;</span>)} {startedAt.getDate()} {startedAt.toLocaleString('default', {month: 'short'})}</Typography>
-                <Typography className={classes.secondaryHeading}>{type}</Typography>
+                <Typography className={classes.heading}>{(changed && process.processId && <span>&#9679;</span>)} {process.startedAt.getDate()} {process.startedAt.toLocaleString('default', {month: 'short'})}</Typography>
+                <Typography className={classes.secondaryHeading}>{process.type}</Typography>
             </ExpansionPanelSummary>
 
             <ExpansionPanelDetails className={classes.expansionDetails}>
@@ -148,8 +162,8 @@ export default function ProcessForm(props) {
                     <DateTimePicker
                         autoOk
                         ampm={false}
-                        value={startedAt}
-                        onChange={e => {setStartedAt(e); setChanged(true)}}
+                        value={process.startedAt}
+                        onChange={e => handleChange('startedAt', e)}
                         label="Process started at"
                         views={['date', 'hours']}
                     />
@@ -159,8 +173,8 @@ export default function ProcessForm(props) {
                 <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="type">Type</InputLabel>
                     <Select
-                    value={type}
-                    onChange={e => {setType(e.target.value); setChanged(true)}}
+                    value={process.type}
+                    onChange={e => handleChange('type', e.target.value)}
                     inputProps={{
                         name: 'type',
                         id: 'type',
@@ -172,6 +186,15 @@ export default function ProcessForm(props) {
                     </Select>
                 </FormControl>
                 
+                {process.ingredients &&
+                    process.ingredients.map(ingredient => (
+                        <ProcessIngredientForm 
+                        key={ingredient.ingredientId}
+                        
+                        />
+                ))}
+                <ProcessIngredientForm/>
+
                 <FormControl className={classes.stepping}>
                     <Button  
                     className={classes.steppingButton} 
@@ -180,9 +203,11 @@ export default function ProcessForm(props) {
                     onClick={() => handleSubmit()}
                     disabled={!changed}
                     >
-                        {(props.processId ? 'Save' : 'Add Process')}
+                        {(process.processId ? 'Save' : 'Add Process')}
                     </Button>
                 </FormControl>
+
+
             </ExpansionPanelDetails>
         </ExpansionPanel>
     )

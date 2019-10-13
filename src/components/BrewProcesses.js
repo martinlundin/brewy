@@ -138,9 +138,7 @@ export default function BrewProcesses(props) {
                                     key={process.processId}
                                     expanded={expanded} 
                                     handleChange={handleChange.bind()} 
-                                    processId={process.processId} 
-                                    type={process.type} 
-                                    startedAt={process.startedAt} 
+                                    process={process}
                                     />
                             ))}
                             <ProcessForm expanded={expanded} handleChange={handleChange.bind()}/>
