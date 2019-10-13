@@ -71,14 +71,11 @@ export default function ProcessForm(props) {
         Axios.post('/process', data)
         .then((response) => {
             dispatch({ type: CLEAR_ERRORS })
-            console.log(response.data)
             setBrew(prev => {
-                console.log(prev)
                 data.startedAt = new Date(data.startedAt)
+                data.processId = response.data.id
                 prev.processes.push(data)
-                console.log('prev')
-                console.log(prev)
-                return { ...prev, processId: response.data.id}
+                return { ...prev }
             })
         })
         .catch((error) => {
@@ -88,16 +85,48 @@ export default function ProcessForm(props) {
             })
         })
     }
-    const handleSave = () => {
+    const FBUpdateProcess = (data) => {
+        dispatch({ type: LOADING_UI })
+        Axios.put(`/process/${data.processId}`, data)
+        .then((response) => {
+            dispatch({ type: CLEAR_ERRORS })
+            setBrew(prev => {
+                data.startedAt = new Date(data.startedAt)
+                let processes = prev.processes.map(process => {
+                    if(process.processId === data.processId){
+                        return data
+                    } else {
+                        return process
+                    }
+                })
+                console.log({ ...prev, processes })
+                return { ...prev, processes }
+            })
+        })
+        .catch((error) => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: error.response.data,
+            })
+        })
+    }
+    const handleSubmit = () => {
         setChanged(false)
         if(props.processId){
-
+            FBUpdateProcess({
+                processId: props.processId,
+                brewId: brew.brewId,
+                type,
+                startedAt: startedAt.toISOString(),
+            })
         } else {
             FBCreateProcess({
                 brewId: brew.brewId,
                 type,
                 startedAt: startedAt.toISOString(),
             })
+            setStartedAt(date)
+            setType('')
         }
     }
 
@@ -109,7 +138,7 @@ export default function ProcessForm(props) {
         <ExpansionPanel expanded={props.expanded === key} onChange={props.handleChange(key)}>
 
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className={classes.heading}>{startedAt.getDate()} {startedAt.toLocaleString('default', {month: 'short'})}</Typography>
+                <Typography className={classes.heading}>{(changed && props.processId && <span>&#9679;</span>)} {startedAt.getDate()} {startedAt.toLocaleString('default', {month: 'short'})}</Typography>
                 <Typography className={classes.secondaryHeading}>{type}</Typography>
             </ExpansionPanelSummary>
 
@@ -148,10 +177,10 @@ export default function ProcessForm(props) {
                     className={classes.steppingButton} 
                     variant="contained" 
                     color="secondary" 
-                    onClick={() => handleSave()}
+                    onClick={() => handleSubmit()}
                     disabled={!changed}
                     >
-                        Save
+                        {(props.processId ? 'Save' : 'Add Process')}
                     </Button>
                 </FormControl>
             </ExpansionPanelDetails>

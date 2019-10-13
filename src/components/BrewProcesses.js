@@ -45,6 +45,9 @@ const useStyles = makeStyles(theme => ({
     container: {
         padding: theme.spacing(2),
     },
+    formGrid: {
+        margin: theme.spacing(2, 0),
+    },
     gridList: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -119,17 +122,14 @@ export default function BrewProcesses(props) {
         <Grid container justify={"center"} className={classes.container}>
             <Container maxWidth="sm">
                 <GridList className={classes.gridList} >
-                    {!ui.loading &&
-                        <BrewTile pattern={brew.pattern} title={brew.category} date={brew.date.getDate()} month={brew.date.toLocaleString('default', {month: 'short'}).toLowerCase()}/>
-                    }
+                    <BrewTile pattern={brew.pattern} title={brew.category} date={brew.date.getDate()} month={brew.date.toLocaleString('default', {month: 'short'}).toLowerCase()}/>
                 </GridList>
-                <Paper className={classes.paper}>
-                    <Grid item xs={12}>
-                        {(ui.loading ? 
-                        <div className={classes.loadingIconWrap}>
-                            <CircularProgress size={20} className={classes.loadingIcon}/>
-                        </div> 
-                        :
+                    <Grid item xs={12} className={classes.formGrid}>
+                        {ui.loading && 
+                            <div className={classes.loadingIconWrap}>
+                                <CircularProgress size={20} className={classes.loadingIcon}/>
+                            </div> 
+                        }
                         <form autoComplete="off" >
 
                             {brew.processes &&
@@ -143,10 +143,10 @@ export default function BrewProcesses(props) {
                                     />
                             ))}
                             <ProcessForm expanded={expanded} handleChange={handleChange.bind()}/>
+
                         </form>
-                        )}    
+                           
                     </Grid>
-                </Paper>
                 <Paper className={classes.infoPaper}>
                     <Typography variant="h5"><InfoOutlinedIcon />Every practice was a learning process</Typography>
                     <Typography paragraph={true}>When you do something with your brew, add a process here to keep track on what works best.</Typography>
