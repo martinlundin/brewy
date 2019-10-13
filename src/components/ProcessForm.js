@@ -1,5 +1,8 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { BrewContext } from './../pages/Brewery'
+import { LOADING_UI, CLEAR_ERRORS, SET_ERRORS } from './../redux/types'
+import Axios from 'axios'
 
 // MUI 
 import FormControl from '@material-ui/core/FormControl'
@@ -26,8 +29,12 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const useStyles = makeStyles(theme => ({
     heading: {
         fontSize: theme.typography.pxToRem(15),
-        flexBasis: '70%',
+        flexBasis: '33%',
         flexShrink: 0,
+    },
+    secondaryHeading: {
+        fontSize: theme.typography.pxToRem(15),
+        color: theme.palette.text.secondary,
     },
     formControl: {
         width: "100%",
@@ -48,63 +55,106 @@ const useStyles = makeStyles(theme => ({
 export default function ProcessForm(props) {
     const [brew, setBrew] = React.useContext(BrewContext)
     const classes = useStyles()
+    const dispatch = useDispatch()
+
+    const date = new Date()
+    date.setMinutes(date.getMinutes() + 30);
+    date.setMinutes(0);
 
     const [type, setType] = React.useState((props.type ? props.type : ''))
-    const [startedAt, setStartedAt] = React.useState(props.startedAt)
+    const [startedAt, setStartedAt] = React.useState((props.startedAt ? props.startedAt : date))
     const [changed, setChanged] = React.useState(false)
+    const [key, setKey] = React.useState((props.processId ? props.processId : 'new'))
+
+    const FBCreateProcess = (data) => {
+        dispatch({ type: LOADING_UI })
+        Axios.post('/process', data)
+        .then((response) => {
+            dispatch({ type: CLEAR_ERRORS })
+            console.log(response.data)
+            setBrew(prev => {
+                console.log(prev)
+                data.startedAt = new Date(data.startedAt)
+                prev.processes.push(data)
+                console.log('prev')
+                console.log(prev)
+                return { ...prev, processId: response.data.id}
+            })
+        })
+        .catch((error) => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: error.response.data,
+            })
+        })
+    }
+    const handleSave = () => {
+        setChanged(false)
+        if(props.processId){
+
+        } else {
+            FBCreateProcess({
+                brewId: brew.brewId,
+                type,
+                startedAt: startedAt.toISOString(),
+            })
+        }
+    }
 
     React.useEffect(() => {
-        if(!props.startedAt){
-            // Date as closest hour
-            const date = new Date()
-            date.setMinutes(date.getMinutes() + 30);
-            date.setMinutes(0);
-            setStartedAt(date)
-        }
+        
     }, [])
 
     return (
-        <>
-            <FormControl className={classes.formControl}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DateTimePicker
-                    autoOk
-                    ampm={false}
-                    value={startedAt}
-                    onChange={e => {setStartedAt(e); setChanged(true)}}
-                    label="Process started at"
-                    views={['date', 'hours']}
-                />
-                </MuiPickersUtilsProvider>
-            </FormControl>
+        <ExpansionPanel expanded={props.expanded === key} onChange={props.handleChange(key)}>
 
-            <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="type">Type</InputLabel>
-                <Select
-                value={type}
-                onChange={e => {setType(e.target.value); setChanged(true)}}
-                inputProps={{
-                    name: 'type',
-                    id: 'type',
-                }}
-                >
-                    <MenuItem value={""}><em>None</em></MenuItem>
-                    <MenuItem value={"Fermentation"}>Fermentation</MenuItem>
-                    <MenuItem value={"Cooling"}>Cooling</MenuItem>
-                </Select>
-            </FormControl>
-            
-            <FormControl className={classes.stepping}>
-                <Button  
-                className={classes.steppingButton} 
-                variant="contained" 
-                color="secondary" 
-                onClick={() => {console.log('asd')}}
-                disabled={!changed}
-                >
-                    Save
-                </Button>
-            </FormControl>
-        </>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={classes.heading}>{startedAt.getDate()} {startedAt.toLocaleString('default', {month: 'short'})}</Typography>
+                <Typography className={classes.secondaryHeading}>{type}</Typography>
+            </ExpansionPanelSummary>
+
+            <ExpansionPanelDetails className={classes.expansionDetails}>
+                <FormControl className={classes.formControl}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DateTimePicker
+                        autoOk
+                        ampm={false}
+                        value={startedAt}
+                        onChange={e => {setStartedAt(e); setChanged(true)}}
+                        label="Process started at"
+                        views={['date', 'hours']}
+                    />
+                    </MuiPickersUtilsProvider>
+                </FormControl>
+
+                <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="type">Type</InputLabel>
+                    <Select
+                    value={type}
+                    onChange={e => {setType(e.target.value); setChanged(true)}}
+                    inputProps={{
+                        name: 'type',
+                        id: 'type',
+                    }}
+                    >
+                        <MenuItem value={""}><em>None</em></MenuItem>
+                        <MenuItem value={"Fermentation"}>Fermentation</MenuItem>
+                        <MenuItem value={"Cooling"}>Cooling</MenuItem>
+                    </Select>
+                </FormControl>
+                
+                <FormControl className={classes.stepping}>
+                    <Button  
+                    className={classes.steppingButton} 
+                    variant="contained" 
+                    color="secondary" 
+                    onClick={() => handleSave()}
+                    disabled={!changed}
+                    >
+                        Save
+                    </Button>
+                </FormControl>
+            </ExpansionPanelDetails>
+        </ExpansionPanel>
     )
 }

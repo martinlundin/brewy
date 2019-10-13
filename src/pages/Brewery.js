@@ -13,7 +13,8 @@ export default function Brewery(props) {
         brewId: props.match.params.brewId,
         date,
         category: '',
-        pattern: ''
+        pattern: '',
+        processes: [],
     })
     return (
         <BrewContext.Provider value={[brew, setBrew]}>   

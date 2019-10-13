@@ -1,11 +1,10 @@
 import React from 'react'
 import Axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { SET_ERRORS } from './../redux/types'
 import generatePattern from '../util/pattern'
 import BrewTile from './BrewTile'
 import { BrewContext } from './../pages/Brewery'
-import { LOADING_UI, CLEAR_ERRORS } from './../redux/types'
+import { LOADING_UI, CLEAR_ERRORS, SET_ERRORS } from './../redux/types'
 
 // MUI
 import FormControl from '@material-ui/core/FormControl'

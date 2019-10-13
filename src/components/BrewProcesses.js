@@ -30,7 +30,6 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles(theme => ({
-    
     paper: {
         padding: theme.spacing(3,2),
         margin: theme.spacing(2, 0),
@@ -82,7 +81,7 @@ export default function BrewProcesses(props) {
     const classes = useStyles()
     const ui = useSelector((state) => state.ui)
 
-    const [expanded, setExpanded] = React.useState("panel1");
+    const [expanded, setExpanded] = React.useState('new');
     const handleChange = panel => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
@@ -93,9 +92,18 @@ export default function BrewProcesses(props) {
             dispatch({ type: LOADING_UI })
             Axios.get(`/brew/${brew.brewId}`)
             .then(response => {
-                console.log(response.data)
                 dispatch({ type: CLEAR_ERRORS })
-                setBrew({ ...response.data, date: new Date(response.data.date) })
+                // Parse date to be accessible
+                let processes = response.data.processes.map(process => {
+                    process.startedAt = new Date(process.startedAt)
+                    return process
+                })
+                let date = new Date(response.data.date)
+                setBrew({ 
+                    ...response.data, 
+                    date,
+                    processes,
+                })
             })
             .catch((error) => {
                 console.log(error)
@@ -107,7 +115,6 @@ export default function BrewProcesses(props) {
         }
     }, [])
     
-console.log(brew)
     return (
         <Grid container justify={"center"} className={classes.container}>
             <Container maxWidth="sm">
@@ -124,11 +131,18 @@ console.log(brew)
                         </div> 
                         :
                         <form autoComplete="off" >
+
                             {brew.processes &&
-                                brew.processes.map(process => {
-                                    return process.type
-                            })}
-                            <ProcessForm />
+                                brew.processes.map(process => (
+                                    <ProcessForm 
+                                    expanded={expanded} 
+                                    handleChange={handleChange.bind()} 
+                                    processId={process.processId} 
+                                    type={process.type} 
+                                    startedAt={process.startedAt} 
+                                    />
+                            ))}
+                            <ProcessForm expanded={expanded} handleChange={handleChange.bind()}/>
                         </form>
                         )}    
                     </Grid>
