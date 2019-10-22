@@ -5,8 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux'
-import { logoutUserAction } from '../redux/actions/userActions'
+import firebase from './../util/firebase';
+import { AuthContext } from './../util/auth';
 
 const useStyles = makeStyles(theme => ({
 
@@ -31,9 +31,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function Header() {
   const classes = useStyles();
-  const user = useSelector((state) => state.user)
-  const dispatch = useDispatch()
-  const logoutUser = () => dispatch(logoutUserAction())
+  const currentUser = React.useContext(AuthContext);
+console.log(currentUser)
   return (
     <header id="header" className={classes.root}>
       <AppBar position="static">
@@ -42,8 +41,8 @@ export default function Header() {
                 <Link to="/" className={classes.siteIdentity}><span className={classes.siteIcon} role="img" aria-label="Beer icon">🍻</span> Brewy</Link>
             </Grid>
             <Grid item xs={6} className={classes.toright}>
-            {user.authenticated ? 
-              <Button variant="contained" size="small" color="secondary" className={classes.margin} onClick={logoutUser}>
+            {currentUser ? 
+              <Button variant="contained" size="small" color="secondary" className={classes.margin} onClick={() => firebase.auth().signOut()}>
                 Logout
               </Button>
             :

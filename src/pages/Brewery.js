@@ -1,6 +1,4 @@
 import React from 'react'
-import StartBrew from './../components/StartBrew'
-import BrewProcesses from './../components/BrewProcesses'
 
 export const BrewContext = React.createContext();
 
@@ -18,8 +16,8 @@ export default function Brewery(props) {
     })
     return (
         <BrewContext.Provider value={[brew, setBrew]}>   
-            {!brew.brewId && <StartBrew/>}
-            {brew.brewId && <BrewProcesses/>}
+            {!brew.brewId && <></>}
+            {brew.brewId && <></>}
         </BrewContext.Provider>
     )
 }
