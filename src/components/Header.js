@@ -21,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     paddingTop: 0,
     paddingBottom: 0,
+    marginTop: 0,
+    marginBottom: 0,
   },
   siteIdentity: {
     textDecoration: 'none',
@@ -52,44 +54,42 @@ export default function Header() {
   const currentUser = React.useContext(AuthContext);
 
   return (
-    <header id="header">
-      <Container className={classes.container}>
-        <Link to="/" className={classes.siteIdentity}>
-          <img className={classes.siteIcon} src={brewy} alt="Brewy logo" />
-        </Link>
-        <Grid className={classes.toright}>
-          {currentUser
-            ? (
-              <Button
-                variant="contained"
-                size="small"
+    <Container component="header" id="header" className={classes.container}>
+      <Link to="/" className={classes.siteIdentity}>
+        <img className={classes.siteIcon} src={brewy} alt="Brewy logo" />
+      </Link>
+      <Grid className={classes.toright}>
+        {currentUser
+          ? (
+            <Button
+              variant="contained"
+              size="small"
+              color="primary"
+              className={classes.user}
+              component={Link}
+              to="/profile"
+            >
+              <PersonIcon />
+            </Button>
+          )
+          : (
+            <Link
+              className={classes.user}
+              to="/login"
+            >
+              <PersonIcon
                 color="primary"
-                className={classes.user}
-                component={Link}
-                to="/profile"
+                className={classes.userIcon}
+              />
+              <Typography
+                className={classes.userText}
+                color="primary"
               >
-                <PersonIcon />
-              </Button>
-            )
-            : (
-              <Link
-                className={classes.user}
-                to="/login"
-              >
-                <PersonIcon
-                  color="primary"
-                  className={classes.userIcon}
-                />
-                <Typography
-                  className={classes.userText}
-                  color="primary"
-                >
                   Login
-                </Typography>
-              </Link>
-            )}
-        </Grid>
-      </Container>
-    </header>
+              </Typography>
+            </Link>
+          )}
+      </Grid>
+    </Container>
   );
 }
