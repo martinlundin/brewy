@@ -14,6 +14,7 @@ import { StatusProvider } from './util/status';
 import PrivateRoute from './util/PrivateRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 import Brewery from './pages/Brewery';
 import Header from './components/Header';
 import Toast from './components/Toast';
@@ -31,6 +32,7 @@ export default function App() {
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/login" component={Login} />
+                <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute exact path="/brewery" component={Brewery} />
               </Switch>
             </Router>
