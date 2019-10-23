@@ -42,6 +42,11 @@ export default {
         fontSize: '1.5rem',
       },
     },
+    MuiInputLabel: {
+      outlined: {
+        transform: 'translate(14px, 26px) scale(1)',
+      },
+    },
     MuiButton: {
       sizeSmall: {
         fontSize: '1rem',
@@ -59,6 +64,9 @@ export default {
   props: {
     MuiTextField: {
       variant: 'outlined',
+    },
+    MuiButton: {
+      color: 'primary',
     },
     MuiTypography: {
       variantMapping: {

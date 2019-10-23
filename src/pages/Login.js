@@ -117,7 +117,6 @@ function Login({ history }) {
               type="submit"
               fullWidth
               variant="contained"
-              color="primary"
             >
               Send Code
               <Loader />
@@ -154,7 +153,6 @@ function Login({ history }) {
               type="submit"
               fullWidth
               variant="contained"
-              color="primary"
             >
               Confirm
             </Button>
