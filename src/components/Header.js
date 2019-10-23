@@ -11,6 +11,7 @@ import PersonIcon from '@material-ui/icons/Person';
 // Local
 import { Typography } from '@material-ui/core';
 import { AuthContext } from '../util/auth';
+import brewy from '../assets/images/brewy.png';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -18,13 +19,15 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   siteIdentity: {
     textDecoration: 'none',
     display: 'inline-block',
   },
   siteIcon: {
-    fontSize: '40px',
+    maxWidth: '60px',
     verticalAlign: 'middle',
   },
   user: {
@@ -52,7 +55,7 @@ export default function Header() {
     <header id="header">
       <Container className={classes.container}>
         <Link to="/" className={classes.siteIdentity}>
-          <span className={classes.siteIcon} role="img" aria-label="Beer icon">🍻</span>
+          <img className={classes.siteIcon} src={brewy} alt="Brewy logo" />
         </Link>
         <Grid className={classes.toright}>
           {currentUser
