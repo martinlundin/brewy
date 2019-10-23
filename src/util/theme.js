@@ -1,6 +1,7 @@
 export default {
 
   palette: {
+    type: 'dark',
     primary: {
       main: '#f29c51',
       contrastText: '#232323',
@@ -29,25 +30,27 @@ export default {
 
   overrides: {
 
-    MuiInputLabel: {
+    MuiContainer: {
       root: {
-        color: '#e5ddd2',
+        paddingTop: '16px',
+        paddingBottom: '16px',
+        margin: 'auto',
       },
     },
-    MuiOutlinedInput: {
-      notchedOutline: {
-        borderColor: '#e5ddd2',
+    MuiInputBase: {
+      input: {
+        fontSize: '1.5rem',
       },
     },
     MuiButton: {
-      root: {
+      sizeSmall: {
         fontSize: '1rem',
       },
-      sizeSmall: {
-        fontSize: '0.8rem',
+      root: {
+        fontSize: '1.2rem',
       },
       sizeLarge: {
-        fontSize: '1.2rem',
+        fontSize: '1.4rem',
       },
     },
 

@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import MuiPhoneInput from 'material-ui-phone-number';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
@@ -57,67 +58,68 @@ function Login({ history }) {
       <Typography variant="h1">
         Login
       </Typography>
-      <Typography variant="h5" gutterBottom>Enter your phonenumber</Typography>
-      <Typography gutterBottom size="small">
-          You will then recieve a code by SMS. In the next step enter the code and you are logged in. No need to remember any password!
-      </Typography>
-      {!sent
-        ? (
-          <>
-            <MuiPhoneInput
-              defaultCountry="se"
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="number"
-              label="Number"
-              name="number"
-              autoComplete="number"
-              autoFocus
-              value={number}
-              onChange={(e) => setNumber(e)}
-            />
-            <Button
-              id="submit"
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick={sendCodeToNumber}
-            >
-                Send Code
-            </Button>
-          </>
-        )
-        : (
-          <>
-            <ArrowBackIosIcon fontSize="small" />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="code"
-              label="Code"
-              name="code"
-              autoFocus
-              value={code}
-              type="number"
-              onChange={(e) => setCode(e.target.value)}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick={verifyCode}
-            >
-                Confirm
-            </Button>
-          </>
-        )}
-
+      {!sent ? (
+        <Grid>
+          <Typography variant="h5" gutterBottom>
+            Enter your phonenumber
+          </Typography>
+          <Typography gutterBottom size="small">
+            You will then recieve a code by SMS.
+            In the next step enter the code and you are logged in.
+            No need to remember any password!
+          </Typography>
+          <MuiPhoneInput
+            defaultCountry="se"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="number"
+            label="Number"
+            name="number"
+            autoComplete="number"
+            autoFocus
+            value={number}
+            onChange={(e) => setNumber(e)}
+          />
+          <Button
+            id="submit"
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={sendCodeToNumber}
+          >
+            Send Code
+          </Button>
+        </Grid>
+      ) : (
+        <Grid>
+          <ArrowBackIosIcon fontSize="small" />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="code"
+            label="Code"
+            name="code"
+            autoFocus
+            value={code}
+            type="number"
+            onChange={(e) => setCode(e.target.value)}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={verifyCode}
+          >
+            Confirm
+          </Button>
+        </Grid>
+      )}
     </Container>
   );
 }

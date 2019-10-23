@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Staatliches&display=swap');
 .App{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     text-align:center;
 }
