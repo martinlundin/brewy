@@ -1,43 +1,43 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext } from 'react';
+import { withRouter } from 'react-router-dom';
+import firebase from 'firebase';
+
+// MUI
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { Link } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import MuiPhoneInput from 'material-ui-phone-number';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import firebase from 'firebase'
 
-import { withRouter } from 'react-router'
+// Local
+import { AuthContext } from '../util/auth';
 
-import { AuthContext } from './../util/auth'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   '@global': {
     body: {
-      backgroundColor: theme.palette.common.white
-    }
+      backgroundColor: theme.palette.common.white,
+    },
   },
   paper: {
     marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   loadingIcon: {
     color: theme.palette.common.white,
     position: 'absolute',
-    right: '10px'
-  }
+    right: '10px',
+  },
 }));
 
 function Login({ history }) {
@@ -49,36 +49,36 @@ function Login({ history }) {
 
   function sendCodeToNumber() {
     firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier)
-    .then(function (confirmationResult) {
+      .then((confirmationResult) => {
       // SMS sent. Prompt user to type the code from the message, then sign the
-      setSent(true)
-      window.confirmationResult = confirmationResult;
-    }).catch(function (error) {
+        setSent(true);
+        window.confirmationResult = confirmationResult;
+      }).catch((error) => {
       // Error; SMS not sent
-      console.log(error)
-    });
+        console.log(error);
+      });
   }
 
   function verifyCode() {
-    window.confirmationResult.confirm(code).then(function (result) {
+    window.confirmationResult.confirm(code).then(() => {
       // User signed in successfully.
-      console.log('Logged in!')
-    }).catch(function (error) {
+      console.log('Logged in!');
+    }).catch((error) => {
       // User couldn't sign in (bad verification code?)
-      console.log(error)
+      console.log(error);
     });
   }
 
   React.useEffect(() => {
     // Make invisible captcha to prevent spam
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('submit', { 'size': 'invisible' });
-  }, [])
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('submit', { size: 'invisible' });
+  }, []);
 
   React.useEffect(() => {
     // If there is a currentUser push him to frontpage
-    if(currentUser) history.push("/")
-  }, [currentUser, history])
-  
+    if (currentUser) history.push('/');
+  }, [currentUser, history]);
+
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -88,63 +88,67 @@ function Login({ history }) {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        
-        {!sent ?
-          <>
-          <MuiPhoneInput
-          defaultCountry='se'
-          variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="number"
-            label="Number"
-            name="number"
-            autoComplete="number"
-            autoFocus
-            value={number}
-            onChange={e => setNumber(e)}
-        />          
-          <Button
-          id="submit"
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={sendCodeToNumber}
-          >Send Code</Button>
-          </>
-        : 
-        <>
-          <ArrowBackIosIcon fontSize="small" />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="code"
-            label="Code"
-            name="code"
-            autoFocus
-            value={code}
-            type="number"
-            onChange={e => setCode(e.target.value)}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={verifyCode}
-          >
-            Confirm
-          </Button>
-          </>
-          }
+
+        {!sent
+          ? (
+            <>
+              <MuiPhoneInput
+                defaultCountry="se"
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="number"
+                label="Number"
+                name="number"
+                autoComplete="number"
+                autoFocus
+                value={number}
+                onChange={(e) => setNumber(e)}
+              />
+              <Button
+                id="submit"
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={sendCodeToNumber}
+              >
+                Send Code
+              </Button>
+            </>
+          )
+          : (
+            <>
+              <ArrowBackIosIcon fontSize="small" />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="code"
+                label="Code"
+                name="code"
+                autoFocus
+                value={code}
+                type="number"
+                onChange={(e) => setCode(e.target.value)}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={verifyCode}
+              >
+                Confirm
+              </Button>
+            </>
+          )}
 
       </div>
     </Container>
-  )
+  );
 }
 
-export default withRouter (Login)
+export default withRouter(Login);

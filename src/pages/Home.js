@@ -1,13 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+// MUI
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import { Link } from 'react-router-dom';
-import { AuthProvider } from './../util/auth';
 
-const useStyles = makeStyles(theme => ({
+// Local
+import { AuthProvider } from '../util/auth';
+
+
+const useStyles = makeStyles((theme) => ({
   home: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   fab: {
     position: 'fixed',
@@ -17,11 +22,11 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     background: theme.palette.secondary.main,
     color: theme.palette.common.white,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   addIcon: {
-    marginRight: '5px'
-  }
+    marginRight: '5px',
+  },
 }));
 
 export default function Home() {

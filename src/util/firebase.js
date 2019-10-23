@@ -8,7 +8,7 @@ const firebaseConfig = {
   storageBucket: 'brewy-1.appspot.com',
   messagingSenderId: '699948626567',
   appId: '1:699948626567:web:aacce383e0e34e21f97e22',
-  measurementId: 'G-NXD7T8BKGX'
+  measurementId: 'G-NXD7T8BKGX',
 };
 
 export default !firebase.apps.length
