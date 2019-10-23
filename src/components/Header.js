@@ -1,58 +1,92 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom';
-import firebase from './../util/firebase';
-import { AuthContext } from './../util/auth';
 
-const useStyles = makeStyles(theme => ({
+// MUI
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import PersonIcon from '@material-ui/icons/Person';
 
-  root: {
-    flexGrow: 1,
-  },
-  toright: {
-    textAlign: "right",
+// Local
+import { Typography } from '@material-ui/core';
+import { AuthContext } from '../util/auth';
+
+const useStyles = makeStyles((theme) => ({
+
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   siteIdentity: {
-    color: theme.palette.common.white,
-    textDecoration: "none",
-    fontSize: "20px",
+    textDecoration: 'none',
     display: 'inline-block',
   },
   siteIcon: {
-    fontSize: "40px",
-    verticalAlign: "middle",
+    fontSize: '40px',
+    verticalAlign: 'middle',
+  },
+  user: {
+    display: 'inline-block',
+    textDecoration: 'none',
+  },
+  userIcon: {
+    display: 'block',
+    margin: '0 auto',
+    fontSize: '30px',
+  },
+  userText: {
+    fontSize: '12px',
+    lineHeight: '5px',
   },
 
 }));
 
 export default function Header() {
   const classes = useStyles();
+
   const currentUser = React.useContext(AuthContext);
-console.log(currentUser)
+
   return (
-    <header id="header" className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-            <Grid item xs={6}>
-                <Link to="/" className={classes.siteIdentity}><span className={classes.siteIcon} role="img" aria-label="Beer icon">🍻</span> Brewy</Link>
-            </Grid>
-            <Grid item xs={6} className={classes.toright}>
-            {currentUser ? 
-              <Button variant="contained" size="small" color="secondary" className={classes.margin} onClick={() => firebase.auth().signOut()}>
-                Logout
+    <header id="header">
+      <Container className={classes.container}>
+        <Link to="/" className={classes.siteIdentity}>
+          <span className={classes.siteIcon} role="img" aria-label="Beer icon">🍻</span>
+        </Link>
+        <Grid className={classes.toright}>
+          {currentUser
+            ? (
+              <Button
+                variant="contained"
+                size="small"
+                color="primary"
+                className={classes.user}
+                component={Link}
+                to="/profile"
+              >
+                <PersonIcon />
               </Button>
-            :
-              <Button variant="contained" size="small" color="secondary" className={classes.margin} component={Link} to="/login">
-                Login
-              </Button>
-            }
-            </Grid>
-        </Toolbar>
-      </AppBar>
+            )
+            : (
+              <Link
+                className={classes.user}
+                to="/login"
+              >
+                <PersonIcon
+                  color="primary"
+                  className={classes.userIcon}
+                />
+                <Typography
+                  className={classes.userText}
+                  color="primary"
+                >
+                  Login
+                </Typography>
+              </Link>
+            )}
+        </Grid>
+      </Container>
     </header>
   );
 }

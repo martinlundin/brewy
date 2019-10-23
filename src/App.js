@@ -20,8 +20,8 @@ import Global from './components/Global';
 export default function App() {
   return (
     <div className="App">
-      <CssBaseline />
       <MuiThemeProvider theme={createMuiTheme(customTheme)}>
+        <CssBaseline />
         <AuthProvider>
           <Router>
             <Header />
