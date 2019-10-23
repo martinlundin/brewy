@@ -60,5 +60,10 @@ export default {
     MuiTextField: {
       variant: 'outlined',
     },
+    MuiTypography: {
+      variantMapping: {
+        body2: 'span',
+      },
+    },
   },
 };
