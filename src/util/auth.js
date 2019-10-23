@@ -4,10 +4,12 @@ import firebase from './firebase';
 export const AuthContext = React.createContext();
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = React.useState(null);
+  const [currentUser, setCurrentUser] = React.useState(true);
 
   React.useEffect(() => {
-    firebase.auth().onAuthStateChanged(setCurrentUser);
+    firebase.auth().onAuthStateChanged((user) => {
+      setCurrentUser((user || false));
+    });
   }, []);
 
   return (
