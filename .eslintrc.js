@@ -23,6 +23,7 @@ module.exports = {
   rules: {
     "no-use-before-define": 0,
     "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["registration"] }],
+    "no-unused-vars": "warn",
     "max-len": ["error", { "code": 120 }],
     "react/jsx-filename-extension": 0,
     "react/jsx-props-no-spreading": 0,
