@@ -10,12 +10,13 @@ import customTheme from './util/theme';
 
 // Local
 import { AuthProvider } from './util/auth';
+import { StatusProvider } from './util/status';
 import PrivateRoute from './util/PrivateRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Brewery from './pages/Brewery';
 import Header from './components/Header';
-import Global from './components/Global';
+import Toast from './components/Toast';
 
 export default function App() {
   return (
@@ -23,15 +24,17 @@ export default function App() {
       <MuiThemeProvider theme={createMuiTheme(customTheme)}>
         <CssBaseline />
         <AuthProvider>
-          <Router>
-            <Header />
-            <Global />
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
-              <PrivateRoute exact path="/brewery" component={Brewery} />
-            </Switch>
-          </Router>
+          <StatusProvider>
+            <Router>
+              <Header />
+              <Toast />
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/login" component={Login} />
+                <PrivateRoute exact path="/brewery" component={Brewery} />
+              </Switch>
+            </Router>
+          </StatusProvider>
         </AuthProvider>
       </MuiThemeProvider>
     </div>

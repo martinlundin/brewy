@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
@@ -11,110 +9,77 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
-import { CLEAR_ERRORS } from './../redux/types'
+import { StatusContext } from '../util/status';
 
-const variantIcon = {
-  success: CheckCircleIcon,
-  warning: WarningIcon,
-  error: ErrorIcon,
-  info: InfoIcon,
-};
-
-const useStyles1 = makeStyles(theme => ({
-  success: {
-    backgroundColor: green[600],
-  },
+const useStyles = makeStyles((theme) => ({
   error: {
-    backgroundColor: theme.palette.error.dark,
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.error.contrastText,
   },
   info: {
     backgroundColor: theme.palette.primary.main,
-  },
-  warning: {
-    backgroundColor: amber[700],
+    color: theme.palette.primary.contrastText,
   },
   icon: {
     fontSize: 20,
-  },
-  iconVariant: {
-    opacity: 0.9,
     marginRight: theme.spacing(1),
   },
   message: {
     display: 'flex',
     alignItems: 'center',
+    fontSize: 14,
   },
 }));
 
-function MySnackbarContentWrapper(props) {
-  const classes = useStyles1();
-  const { className, message, onClose, variant, ...other } = props;
-  const Icon = variantIcon[variant];
-
-  return (
-    <SnackbarContent
-      className={clsx(classes[variant], className)}
-      aria-describedby="client-snackbar"
-      message={
-        <span id="client-snackbar" className={classes.message}>
-          <Icon className={clsx(classes.icon, classes.iconVariant)} />
-          {message}
-        </span>
-      }
-      action={[
-        <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
-          <CloseIcon className={classes.icon} />
-        </IconButton>,
-      ]}
-      {...other}
-    />
-  );
-}
-
-MySnackbarContentWrapper.propTypes = {
-  className: PropTypes.string,
-  message: PropTypes.string,
-  onClose: PropTypes.func,
-  variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
-};
-
 export default function Toast(props) {
-  const [open, setOpen] = React.useState(props.open);
+  const classes = useStyles();
 
-  const dispatch = useDispatch()
+  const [status, setStatus] = React.useContext(StatusContext);
+  const [variant, setVariant] = React.useState(null);
+  const [text, setText] = React.useState(null);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
+  React.useEffect(() => {
+    if (status.error) {
+      setVariant('error');
+      setText(status.error);
+    } else if (status.message) {
+      setVariant('info');
+      setText(status.info);
+    } else {
+      setText(null);
     }
-    if(props.variant === 'error'){
-        //Clear errors
-        dispatch({ type: CLEAR_ERRORS })
-    }
-
-    setOpen(false);
-  };
+  }, [status]);
 
   return (
-    <div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={open}
-      >
-        <MySnackbarContentWrapper
-          onClose={handleClose}
-          variant={props.variant}
-          message={props.message}
-        />
-      </Snackbar>
-    </div>
+    <Snackbar
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      open={!!text}
+    >
+      <SnackbarContent
+        className={classes[variant]}
+        aria-describedby="client-snackbar"
+        message={(
+          <span id="client-snackbar" className={classes.message}>
+            {variant === 'error'
+              ? <ErrorIcon className={classes.icon} />
+              : <InfoIcon className={classes.icon} />}
+            {text}
+          </span>
+        )}
+        action={[
+          <IconButton
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick={() => setStatus((prev) => ({ ...prev, error: null, message: null }))}
+          >
+            <CloseIcon />
+          </IconButton>,
+        ]}
+      />
+    </Snackbar>
   );
 }
