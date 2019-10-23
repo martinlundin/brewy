@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 // MUI
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import PersonIcon from '@material-ui/icons/Person';
@@ -13,7 +12,7 @@ import { Typography } from '@material-ui/core';
 import { AuthContext } from '../util/auth';
 import brewy from '../assets/images/brewy.png';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 
   container: {
     display: 'flex',
@@ -33,13 +32,14 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: 'middle',
   },
   user: {
-    display: 'inline-block',
+    display: 'flex',
+    flexDirection: 'column',
     textDecoration: 'none',
   },
   userIcon: {
     display: 'block',
     margin: '0 auto',
-    fontSize: '30px',
+    fontSize: '45px',
   },
   userText: {
     fontSize: '12px',
@@ -50,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles();
-
   const currentUser = React.useContext(AuthContext);
 
   return (
@@ -59,36 +58,24 @@ export default function Header() {
         <img className={classes.siteIcon} src={brewy} alt="Brewy logo" />
       </Link>
       <Grid className={classes.toright}>
-        {currentUser
-          ? (
-            <Button
-              variant="contained"
-              size="small"
+
+        <Link
+          className={classes.user}
+          to={currentUser ? '/profile' : '/login'}
+        >
+          <PersonIcon
+            color="primary"
+            className={classes.userIcon}
+          />
+          {!currentUser && (
+            <Typography
+              className={classes.userText}
               color="primary"
-              className={classes.user}
-              component={Link}
-              to="/profile"
             >
-              <PersonIcon />
-            </Button>
-          )
-          : (
-            <Link
-              className={classes.user}
-              to="/login"
-            >
-              <PersonIcon
-                color="primary"
-                className={classes.userIcon}
-              />
-              <Typography
-                className={classes.userText}
-                color="primary"
-              >
-                  Login
-              </Typography>
-            </Link>
+              Login
+            </Typography>
           )}
+        </Link>
       </Grid>
     </Container>
   );
