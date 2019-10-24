@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import MuiPhoneInput from 'material-ui-phone-number';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 // Local
 import Loader from '../components/Loader';
@@ -61,7 +60,8 @@ function Login({ history }) {
       });
   };
 
-  const verifyCode = () => {
+  const verifyCode = (e) => {
+    e.preventDefault();
     setStatus((prev) => ({ ...prev, loading: true }));
     window.confirmationResult.confirm(code).then(() => {
       // User signed in successfully. currentUser state will change automatically via AuthContext
@@ -74,12 +74,13 @@ function Login({ history }) {
 
   React.useEffect(() => {
     // Make invisible captcha to prevent spam
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('submit', { size: 'invisible' });
+    firebase.auth().settings.appVerificationDisabledForTesting = true;
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('submit-number', { size: 'invisible' });
   }, []);
 
   React.useEffect(() => {
     // If there is a currentUser push him to frontpage
-    if (currentUser) history.push('/');
+    if (currentUser !== true && currentUser !== false) history.push('/');
   }, [currentUser, history]);
 
   return (
@@ -113,7 +114,7 @@ function Login({ history }) {
               onChange={(e) => setNumber(e)}
             />
             <Button
-              id="submit"
+              id="submit-number"
               type="submit"
               fullWidth
               variant="contained"
