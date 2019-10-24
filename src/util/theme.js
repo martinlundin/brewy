@@ -58,7 +58,12 @@ export default {
         fontSize: '1.4rem',
       },
     },
-
+    MuiDivider: {
+      root: {
+        marginTop: '1rem',
+        marginBottom: '1rem',
+      },
+    },
   },
 
   props: {

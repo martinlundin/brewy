@@ -5,9 +5,11 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 
 // Local
 import { AuthContext } from '../util/auth';
+import firebase from '../util/firebase';
 
 export default function Profile() {
   const currentUser = React.useContext(AuthContext);
@@ -49,6 +51,16 @@ export default function Profile() {
           Save
         </Button>
       </form>
+      <Divider />
+      <Button
+        type="submit"
+        margin="normal"
+        fullWidth
+        variant="outlined"
+        onClick={() => firebase.auth().signOut()}
+      >
+        Logout
+      </Button>
     </Container>
   );
 }
