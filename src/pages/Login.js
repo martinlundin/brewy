@@ -108,7 +108,7 @@ function Login({ history }) {
               id="number"
               label="Number"
               name="number"
-              autoComplete="number"
+              autoComplete="off"
               autoFocus
               value={number}
               onChange={(e) => setNumber(e)}
@@ -148,7 +148,7 @@ function Login({ history }) {
               autoFocus
               value={code}
               type="number"
-              onChange={(e) => setCode(e.target.value)}
+              onChange={(e) => (e.target.value.length <= 6 ? setCode(e.target.value) : null)}
             />
             <Button
               type="submit"
