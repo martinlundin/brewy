@@ -50,7 +50,7 @@ const useStyles = makeStyles(() => ({
 
 export default function Header() {
   const classes = useStyles();
-  const currentUser = React.useContext(AuthContext);
+  const [currentUser] = React.useContext(AuthContext);
 
   return (
     <Container component="header" id="header" className={classes.container}>
