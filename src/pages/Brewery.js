@@ -1,23 +1,25 @@
 import React from 'react';
+import StartBrew from '../components/StartBrew'
 
 export const BrewContext = React.createContext();
 
-export default function Brewery() {
-  // Date as closest hour
-  const date = new Date();
-  date.setMinutes(date.getMinutes() + 30);
-  date.setMinutes(0);
+export default function Brewery(props) {
   const [brew, setBrew] = React.useState({
-    // brewId: props.match.params.brewId,
-    date,
+    name: '',
+    date: new Date(),
     category: '',
     pattern: '',
     processes: [],
+    rating: null,
+    ratings: {},
   });
   return (
     <BrewContext.Provider value={[brew, setBrew]}>
-      {!brew.brewId && <></>}
-      {brew.brewId && <></>}
+      {props.match.params.brewId ? 
+        <div>{props.match.params.brewId}</div>
+      : 
+        <StartBrew />
+      }
     </BrewContext.Provider>
   );
 }

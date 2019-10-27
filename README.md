@@ -37,6 +37,7 @@ Create your brew recepies and see what others are doing. Set rating on the brews
 | :-------: | ----------- | 
 | :x:       | Add public user page
 | :x:       | Add brewery
+| :x:       | Enforce firestore schema to ensure valid data is added/changed 
 
 ---
 

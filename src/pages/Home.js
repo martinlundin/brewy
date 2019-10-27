@@ -20,7 +20,7 @@ export default function Home() {
     <Container className={classes.home}>
       <Typography variant="h1">Home</Typography>
       <Typography>lorem ipsum</Typography>
-      <Link to="/login">Link</Link>
+      <Link to="/brewery">Go to brewery</Link>
     </Container>
   );
 }

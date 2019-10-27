@@ -34,6 +34,7 @@ export default function App() {
                 <Route exact path="/login" component={Login} />
                 <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute exact path="/brewery" component={Brewery} />
+                <PrivateRoute exact path="/brewery/:brewId" component={Brewery} />
               </Switch>
             </Router>
           </StatusProvider>

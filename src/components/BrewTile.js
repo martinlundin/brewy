@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         height: '150px',
         width: '150px',
+        margin: '0 auto',
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.common.white,
       },

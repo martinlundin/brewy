@@ -1,10 +1,6 @@
 import React from 'react'
 import Axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
-import generatePattern from '../util/pattern'
-import BrewTile from './BrewTile'
-import { BrewContext } from './../pages/Brewery'
-import { LOADING_UI, CLEAR_ERRORS, SET_ERRORS } from './../redux/types'
+import { withRouter } from 'react-router-dom';
 
 // MUI
 import FormControl from '@material-ui/core/FormControl'
@@ -24,6 +20,13 @@ import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+// Local
+import generatePattern from '../util/pattern'
+import { BrewContext } from './../pages/Brewery'
+import { StatusContext } from './../util/status'
+import firebase from './../util/firebase'
+import BrewTile from './BrewTile'
+import Loader from './Loader'
 
 const useStyles = makeStyles(theme => ({
     
@@ -32,29 +35,30 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(2, 0),
         width: "100%",
     },
-    infoPaper: {
-        padding: theme.spacing(3,2),
-        margin: theme.spacing(2, 0),
-        width: "100%",
-        background: theme.palette.primary.main,
-        color: theme.palette.common.white,
-    },
     container: {
         padding: theme.spacing(2),
     },
     gridList: {
         display: 'flex',
+        flexDirection: 'column',
         flexWrap: 'wrap',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         overflow: 'hidden',
     },
     formControl: {
         width: "100%",
         margin: theme.spacing(1, 0),
     },
+    brewTile: {
+        margin: '0 auto',
+    },
     patternButton: {
         display: 'flex',
-        margin: '0 auto',
+        margin: '5px auto',
+        height: 'auto!important',
+        width: 'auto!important',
+        padding: '2px 5px!important',
+        fontSize: '12px',
     },
     stepping: {
         width: '100%',
@@ -65,54 +69,78 @@ const useStyles = makeStyles(theme => ({
         marginRight: '0',
         margin: theme.spacing(1),
     },
+    infoPaper: {
+        padding: theme.spacing(3,2),
+        margin: theme.spacing(2, 0),
+        width: "100%",
+    },
+    infoIcon: {
+        verticalAlign: 'middle',
+    },
 
 }))
 
-export default function StartBrew() {
-    const dispatch = useDispatch()
+function StartBrew({ history }) {
     const classes = useStyles()
-    const ui = useSelector((state) => state.ui)
 
     const [brew, setBrew] = React.useContext(BrewContext)
+    const [status, setStatus] = React.useContext(StatusContext)
+
     React.useEffect(() => {
         setBrew(prev => ({ ...prev, pattern: generatePattern()}))
     }, [])
 
-    const FBCreateBrew = (data) => {
-        dispatch({ type: LOADING_UI })
-        Axios.post('/brew', data)
-        .then((response) => {
-            dispatch({ type: CLEAR_ERRORS })
-            let brewId = response.data.id
-            setBrew(prev => ({ ...prev, brewId}))
-            window.history.pushState({}, document.title, `/brewery/${brewId}`);
+    // Fixed select label styling
+    const inputLabel = React.useRef(null);
+    const [labelWidth, setLabelWidth] = React.useState(0);
+    React.useEffect(() => {
+        setLabelWidth(inputLabel.current.offsetWidth);
+    }, []);
+
+    const createBrew = () => {
+        //Loading
+        setStatus(prev => ({...prev, loading: true}))
+        
+        firebase.firestore()
+        .collection('brews')
+        .add(brew)
+        .then(ref => {
+            setStatus(prev => ({...prev, loading: false, error: null}))
+            history.push(`/brewery/${ref.id}`)
         })
-        .catch((error) => {
-            dispatch({
-                type: SET_ERRORS,
-                payload: error.response.data,
-            })
+        .catch(error => {
+            console.error(error)
+            setStatus(prev => ({...prev, loading: false, error: error.message}))
         })
     }
+ 
+
+    React.useEffect(() => {
+        // Date as closest hour
+        const date = new Date();
+        date.setMinutes(date.getMinutes() + 30);
+        date.setMinutes(0);
+        setBrew(prev => ({...prev, date}))
+    }, [])
 
     return (
         <Container className={classes.container} maxWidth="sm">
             <GridList className={classes.gridList} >
-                <BrewTile pattern={brew.pattern} title={brew.category} date={brew.date.getDate()} month={brew.date.toLocaleString('default', {month: 'short'}).toLowerCase()}/>
+                <BrewTile className={classes.brewTile} pattern={brew.pattern} title={brew.category} date={brew.date.getDate()} month={brew.date.toLocaleString('default', {month: 'short'}).toLowerCase()}/>
+                <Button 
+                variant="outlined" 
+                color="secondary" 
+                className={classes.patternButton} 
+                onClick={() => setBrew(prev => ({ ...prev, 
+                    pattern: generatePattern()
+                }))}
+                >
+                    Generate pattern
+                </Button>
             </GridList>
             <Paper className={classes.paper}>
                 <Grid item xs={12}>
                     <form autoComplete="off" >
-                        <Button 
-                        variant="outlined" 
-                        color="secondary" 
-                        className={classes.patternButton} 
-                        onClick={() => setBrew(prev => ({ ...prev, 
-                            pattern: generatePattern()
-                        }))}
-                        >
-                            Generate pattern
-                        </Button>
                         
                         <FormControl className={classes.formControl}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -129,14 +157,14 @@ export default function StartBrew() {
                             </MuiPickersUtilsProvider>
                         </FormControl>
 
-                        <FormControl className={classes.formControl}>
-                            <InputLabel htmlFor="category">Category</InputLabel>
-
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel ref={inputLabel} htmlFor="category">Category</InputLabel>
                             <Select
                             value={brew.category}
                             onChange={e => setBrew(prev => ({ ...prev, 
                                 category: e.target.value
                             }))}
+                            labelWidth={labelWidth}
                             inputProps={{
                                 name: 'category',
                                 id: 'category',
@@ -157,16 +185,10 @@ export default function StartBrew() {
                             className={classes.steppingButton} 
                             variant="contained" 
                             color="secondary" 
-                            onClick={() => FBCreateBrew({
-                                pattern: brew.pattern,
-                                category: brew.category,
-                                date: brew.date.toISOString(),
-                            })}
+                            onClick={() => createBrew()}
                             >
                                 Start
-                                {ui.loading && (
-                                    <CircularProgress size={20} className={classes.loadingIcon}/>
-                                )}
+                                <Loader />
                             </Button>
                         </FormControl>
 
@@ -174,9 +196,11 @@ export default function StartBrew() {
                 </Grid>
             </Paper>
             <Paper className={classes.infoPaper}>
-                <Typography variant="h5"><InfoOutlinedIcon /> All masterpieces starts somewhere</Typography>
-                <Typography paragraph={true}>And this is where you start yours. Give the brew a date and a category. The pattern is as a placeholder, you will be able to add an image and name the brew when it is completed.</Typography>
+                <Typography variant="h5" gutterBottom={true}><InfoOutlinedIcon className={classes.infoIcon} /> All masterpieces starts somewhere</Typography>
+                <Typography >And this is where you start yours. Give the brew a date and a category. The pattern is as a placeholder, you will be able to add an image and name the brew when it is completed.</Typography>
             </Paper>
         </Container>
     )
 }
+
+export default withRouter(StartBrew);
