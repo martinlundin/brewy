@@ -54,7 +54,7 @@ function Profile({ history }) {
     if (currentUser && currentUser.profile) {
       setDisplayName(currentUser.profile.displayName);
       setAvatar(currentUser.profile.avatar);
-    } else{
+    } else if(currentUser && currentUser.uid){
       setAvatar(generatePattern());
     }
   }, [currentUser]);
@@ -62,15 +62,15 @@ function Profile({ history }) {
   const handleProgress = progress => console.log(progress)
   const handleUploadError = error => {
     console.error(error);
+    setStatus((prev) => ({ ...prev, loading: false, error: "Error while uploading" }));
   };
   const handleUploadSuccess = filename => {
-    console.log('success upload')
     firebase
       .storage()
       .ref("images")
       .child(filename)
       .getDownloadURL()
-      .then(url => {setAvatar(url); console.log('successurl', url)});
+      .then(url => setAvatar(url));
   };
 
   const submitHandler = (e) => {
@@ -128,7 +128,7 @@ function Profile({ history }) {
           fullWidth
           autoComplete="off"
           value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
+          onChange={(e) => (e.target.value.length <= 12 ? setDisplayName(e.target.value) : null)}
         />
         <Button
           type="submit"
