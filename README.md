@@ -1,5 +1,7 @@
-# :beer: Brewy
-Keep track and collect data for your brews. [Add more description]
+# :beers: Brewy
+Making several brews simuntantiously can get messy and confusing very quick. **Keep orginized with Brewy**. We help you keep track and collect data for your brews.
+
+Create your brew recepies and see what others are doing. Set rating on the brews and, eventually you might see some patterns of what works well and what does not.
 
 ---
 
@@ -8,8 +10,8 @@ Keep track and collect data for your brews. [Add more description]
 | Pages                 | Status                | Description |
 | --------------------- | :-------------------: | ----------- | 
 | `/`                   | :soon:                | Home page, feed of popular and new brews, if logged in display your latest brews |
-| `/login`              | :white_check_mark:    | Login form page |
-| `/register`           | :white_check_mark:    | Register form page |
+| `/login`              | :white_check_mark:    | Login with phone number |
+| `/profile`            | :soon:    | Edit current user profile |
 | `/user/:userId`       | :x:                   | User profile, show edit buttons for fields if user is logged in and own the user|
 | `/brewery`            | :soon:                | Welcome to the brewery, start a new brew or pick up where you left on the previous |
 | `/brewery/:brewId`    | :soon:                | Edit page of specific brew |
@@ -33,17 +35,14 @@ Keep track and collect data for your brews. [Add more description]
 ## Todo
 | Status    | Description |
 | :-------: | ----------- | 
-| :x:       | Remove redux and replace it with the react Context API
-| :x:       | Add user profile and link it in header when logged in
-| :x:       | Add password reset
+| :x:       | Add public user page
+| :x:       | Add brewery
 
 ---
 
 ## Improvments
 | Status    | Description |
 | :-------: | ----------- | 
-| :x:       | Extend token lifetime
-| :x:       | Create logo & identity, make a theme of it
 | :x:       | Router transitions for more fluid ux
 
 ---
@@ -53,6 +52,5 @@ You are very welcome to contribute to the project. Follow these steps to install
 
 #### Installation
 - Clone this project from git, in terminal run `git clone https://github.com/martinlundin/brewy-firebase.git`
-- In package.json add your url to proxy
 
 [Todo make comprehensive insallation guide]
