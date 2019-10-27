@@ -29,28 +29,12 @@ import BrewTile from './BrewTile'
 import Loader from './Loader'
 
 const useStyles = makeStyles(theme => ({
-    
-    paper: {
-        padding: theme.spacing(3,2),
-        margin: theme.spacing(2, 0),
-        width: "100%",
-    },
-    container: {
-        padding: theme.spacing(2),
-    },
     gridList: {
         display: 'flex',
         flexDirection: 'column',
         flexWrap: 'wrap',
         justifyContent: 'center',
         overflow: 'hidden',
-    },
-    formControl: {
-        width: "100%",
-        margin: theme.spacing(1, 0),
-    },
-    brewTile: {
-        margin: '0 auto',
     },
     patternButton: {
         display: 'flex',
@@ -62,17 +46,11 @@ const useStyles = makeStyles(theme => ({
     },
     stepping: {
         width: '100%',
+        display: 'flex',
+        justifyContent: 'flex-end',
     },
     steppingButton: {
-        display: 'flex',
         marginLeft: 'auto',
-        marginRight: '0',
-        margin: theme.spacing(1),
-    },
-    infoPaper: {
-        padding: theme.spacing(3,2),
-        margin: theme.spacing(2, 0),
-        width: "100%",
     },
     infoIcon: {
         verticalAlign: 'middle',
@@ -125,11 +103,10 @@ function StartBrew({ history }) {
 
     return (
         <Container className={classes.container} maxWidth="sm">
-            <GridList className={classes.gridList} >
-                <BrewTile className={classes.brewTile} pattern={brew.pattern} title={brew.category} date={brew.date.getDate()} month={brew.date.toLocaleString('default', {month: 'short'}).toLowerCase()}/>
+            <GridList className={classes.gridList}>
+                <BrewTile pattern={brew.pattern} title={brew.category} date={brew.date.getDate()} month={brew.date.toLocaleString('default', {month: 'short'}).toLowerCase()}/>
                 <Button 
                 variant="outlined" 
-                color="secondary" 
                 className={classes.patternButton} 
                 onClick={() => setBrew(prev => ({ ...prev, 
                     pattern: generatePattern()
@@ -138,11 +115,11 @@ function StartBrew({ history }) {
                     Generate pattern
                 </Button>
             </GridList>
-            <Paper className={classes.paper}>
+            <Paper>
                 <Grid item xs={12}>
                     <form autoComplete="off" >
                         
-                        <FormControl className={classes.formControl}>
+                        <FormControl margin="normal" fullWidth>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <DateTimePicker
                                     autoOk
@@ -157,7 +134,7 @@ function StartBrew({ history }) {
                             </MuiPickersUtilsProvider>
                         </FormControl>
 
-                        <FormControl variant="outlined" className={classes.formControl}>
+                        <FormControl variant="outlined" margin="normal" fullWidth>
                             <InputLabel ref={inputLabel} htmlFor="category">Category</InputLabel>
                             <Select
                             value={brew.category}
@@ -184,7 +161,6 @@ function StartBrew({ history }) {
                             <Button  
                             className={classes.steppingButton} 
                             variant="contained" 
-                            color="secondary" 
                             onClick={() => createBrew()}
                             >
                                 Start
@@ -195,7 +171,7 @@ function StartBrew({ history }) {
                     </form>
                 </Grid>
             </Paper>
-            <Paper className={classes.infoPaper}>
+            <Paper>
                 <Typography variant="h5" gutterBottom={true}><InfoOutlinedIcon className={classes.infoIcon} /> All masterpieces starts somewhere</Typography>
                 <Typography >And this is where you start yours. Give the brew a date and a category. The pattern is as a placeholder, you will be able to add an image and name the brew when it is completed.</Typography>
             </Paper>

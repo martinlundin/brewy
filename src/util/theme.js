@@ -37,6 +37,12 @@ export default {
         margin: 'auto',
       },
     },
+    MuiPaper: {
+      root: {
+        padding: '24px 16px',
+        margin: '16px 0px',
+      }
+    },
     MuiButton: {
       sizeSmall: {
         fontSize: '1rem',
