@@ -43,6 +43,11 @@ export default {
         margin: '16px 0px',
       }
     },
+    MuiSvgIcon: {
+      root: {
+        verticalAlign: 'middle',
+      },
+    },
     MuiButton: {
       sizeSmall: {
         fontSize: '1rem',

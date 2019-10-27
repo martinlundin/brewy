@@ -52,10 +52,6 @@ const useStyles = makeStyles(theme => ({
     steppingButton: {
         marginLeft: 'auto',
     },
-    infoIcon: {
-        verticalAlign: 'middle',
-    },
-
 }))
 
 function StartBrew({ history }) {
@@ -172,7 +168,7 @@ function StartBrew({ history }) {
                 </Grid>
             </Paper>
             <Paper>
-                <Typography variant="h5" gutterBottom={true}><InfoOutlinedIcon className={classes.infoIcon} /> Every masterpiece start somewhere</Typography>
+                <Typography variant="h5" gutterBottom={true}><InfoOutlinedIcon /> Every masterpiece start somewhere</Typography>
                 <Typography >And this is where you start yours. Give the brew a date and a category. The pattern is as a placeholder, you will be able to add an image and name the brew when it is completed.</Typography>
             </Paper>
         </Container>
