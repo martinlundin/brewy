@@ -67,7 +67,14 @@ export default function Header() {
             color="primary"
             className={classes.userIcon}
           />
-          {!currentUser && (
+          {currentUser && currentUser.profile ? (
+            <Typography
+              className={classes.userText}
+              color="primary"
+            >
+              {currentUser.profile.displayName}
+            </Typography>
+          ) : (
             <Typography
               className={classes.userText}
               color="primary"
