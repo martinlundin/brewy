@@ -9,7 +9,7 @@ import PersonIcon from '@material-ui/icons/Person';
 
 // Local
 import { Typography } from '@material-ui/core';
-import { AuthContext } from '../util/auth';
+import AuthContext from '../firebase/auth';
 import brewy from '../assets/images/brewy.png';
 
 const useStyles = makeStyles(() => ({

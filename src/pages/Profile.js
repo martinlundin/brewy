@@ -13,9 +13,9 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 // Local
-import { AuthContext } from '../util/auth';
-import { StatusContext } from '../util/status';
-import firebase from '../util/firebase';
+import AuthContext from '../firebase/auth';
+import StatusContext from '../util/status';
+import firebase from '../firebase/app';
 import Loader from '../components/Loader';
 import generatePattern from '../util/pattern'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrewContext } from './../pages/Brewery'
+import BrewContext from '../firebase/brew'
 import Axios from 'axios'
 import BrewTile from './BrewTile'
 import ProcessForm from './ProcessForm'

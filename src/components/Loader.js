@@ -1,7 +1,7 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import { StatusContext } from '../util/status';
+import StatusContext from '../util/status';
 
 const useStyles = makeStyles(() => ({
   loader: {

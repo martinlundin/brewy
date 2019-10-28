@@ -1,6 +1,7 @@
 import React from 'react';
 
 export const StatusContext = React.createContext();
+export default StatusContext;
 
 export function StatusProvider({ children }) {
   const initialStatus = {

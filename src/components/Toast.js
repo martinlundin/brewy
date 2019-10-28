@@ -10,7 +10,7 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { makeStyles } from '@material-ui/core/styles';
 
 // Local
-import { StatusContext } from '../util/status';
+import StatusContext from '../util/status';
 
 const useStyles = makeStyles((theme) => ({
   error: {

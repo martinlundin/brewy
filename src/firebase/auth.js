@@ -1,7 +1,8 @@
 import React from 'react';
-import firebase from './firebase';
+import firebase from './app';
 
 export const AuthContext = React.createContext();
+export default AuthContext;
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = React.useState(true);

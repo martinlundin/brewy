@@ -9,7 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import customTheme from './util/theme';
 
 // Local
-import { AuthProvider } from './util/auth';
+import { AuthProvider } from './firebase/auth';
 import { StatusProvider } from './util/status';
 import PrivateRoute from './util/PrivateRoute';
 import Home from './pages/Home';

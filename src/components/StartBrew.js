@@ -22,9 +22,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Local
 import generatePattern from '../util/pattern'
-import { BrewContext } from './../pages/Brewery'
-import { StatusContext } from './../util/status'
-import firebase from './../util/firebase'
+import StatusContext from './../util/status'
+import BrewContext from './../firebase/brew'
+import firebase from './../firebase/app'
 import BrewTile from './BrewTile'
 import Loader from './Loader'
 

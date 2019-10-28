@@ -14,8 +14,8 @@ import MuiPhoneInput from 'material-ui-phone-number';
 
 // Local
 import Loader from '../components/Loader';
-import { AuthContext } from '../util/auth';
-import { StatusContext } from '../util/status';
+import AuthContext from '../firebase/auth';
+import StatusContext from '../util/status';
 
 const useStyles = makeStyles(() => ({
   link: {
