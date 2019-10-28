@@ -57,7 +57,9 @@ const useStyles = makeStyles(theme => ({
 function StartBrew({ history }) {
     const classes = useStyles()
 
-    const [brew, setBrew] = React.useContext(BrewContext)
+    const [brewContext, setBrewContext] = React.useContext(BrewContext)
+    const [brew, setBrew] = React.useState(brewContext)
+
     const [status, setStatus] = React.useContext(StatusContext)
 
     React.useEffect(() => {
@@ -71,24 +73,6 @@ function StartBrew({ history }) {
         setLabelWidth(inputLabel.current.offsetWidth);
     }, []);
 
-    const createBrew = () => {
-        //Loading
-        setStatus(prev => ({...prev, loading: true}))
-        
-        firebase.firestore()
-        .collection('brews')
-        .add(brew)
-        .then(ref => {
-            setStatus(prev => ({...prev, loading: false, error: null}))
-            history.push(`/brewery/${ref.id}`)
-        })
-        .catch(error => {
-            console.error(error)
-            setStatus(prev => ({...prev, loading: false, error: error.message}))
-        })
-    }
- 
-
     React.useEffect(() => {
         // Date as closest hour
         const date = new Date();
@@ -96,6 +80,13 @@ function StartBrew({ history }) {
         date.setMinutes(0);
         setBrew(prev => ({...prev, date}))
     }, [])
+
+    React.useEffect(() => {
+        // If brewContext has brewId, move on to it
+        if(brewContext.brewId){
+            history.push(`/brewery/${brewContext.brewId}`)
+        }
+    }, [brewContext])
 
     return (
         <Container className={classes.container} maxWidth="sm">
@@ -157,7 +148,7 @@ function StartBrew({ history }) {
                             <Button  
                             className={classes.steppingButton} 
                             variant="contained" 
-                            onClick={() => createBrew()}
+                            onClick={() => setBrewContext(brew)}
                             >
                                 Start
                                 <Loader />
