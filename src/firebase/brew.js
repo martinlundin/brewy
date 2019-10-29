@@ -29,7 +29,6 @@ export function BrewProvider(props) {
 
             // Make firebase date into javascript date
             brewData.date = new Date(brewData.date.seconds*1000)
-
             setBrew(brewData)
           } 
       })
