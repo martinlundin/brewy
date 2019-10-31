@@ -1,7 +1,5 @@
 import React from 'react'
-import BrewContext from '../firebase/brew'
 import Axios from 'axios'
-import BrewTile from './BrewTile'
 
 // MUI
 import FormControl from '@material-ui/core/FormControl'
@@ -19,15 +17,12 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 // Local
+import BrewContext from '../firebase/brew'
 import Loader from './Loader'
 import ActionsTree from './ActionsTree'
+import BrewTile from './BrewTile'
 
 const useStyles = makeStyles(theme => ({
     grid: {
@@ -45,15 +40,6 @@ export default function BrewProcesses(props) {
     const classes = useStyles()
 
     const [brew, setBrew] = React.useContext(BrewContext)
-
-    const [expanded, setExpanded] = React.useState('new');
-    const handleChange = panel => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-    };
-
-    React.useEffect(() => {
-
-    }, [])
     
     return (
         <Container maxWidth="sm">
