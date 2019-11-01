@@ -8,10 +8,14 @@ export default BrewContext;
 export function BrewProvider(props) {
   const [status, setStatus] = React.useContext(StatusContext)
 
+  const date = new Date();
+        date.setMinutes(date.getMinutes() + 30);
+        date.setMinutes(0);
+
   const [brew, setBrew] = React.useState({
     brewId: null,
     name: '',
-    date: new Date(),
+    date,
     category: '',
     pattern: '',
   });

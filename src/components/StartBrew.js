@@ -74,14 +74,6 @@ function StartBrew({ history }) {
     }, []);
 
     React.useEffect(() => {
-        // Date as closest hour
-        const date = new Date();
-        date.setMinutes(date.getMinutes() + 30);
-        date.setMinutes(0);
-        setBrew(prev => ({...prev, date}))
-    }, [])
-
-    React.useEffect(() => {
         // If brewContext has brewId, move on to it
         if(brewContext.brewId){
             history.push(`/brewery/${brewContext.brewId}`)
@@ -104,7 +96,10 @@ function StartBrew({ history }) {
             </GridList>
             <Paper>
                 <Grid item xs={12}>
-                    <form autoComplete="off" >
+                    <form autoComplete="off" onSubmit={(e) => {
+                        e.preventDefault(); 
+                        setBrewContext(brew)
+                    }}>
                         
                         <FormControl margin="normal" fullWidth>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -147,8 +142,8 @@ function StartBrew({ history }) {
                         <FormControl className={classes.stepping}>
                             <Button  
                             className={classes.steppingButton} 
-                            variant="contained" 
-                            onClick={() => setBrewContext(brew)}
+                            variant="contained"
+                            type="submit"
                             >
                                 Start
                                 <Loader />
