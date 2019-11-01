@@ -17,6 +17,7 @@ const useStyles = makeStyles(theme => ({
   add: {
     flex:1,
     color: theme.palette.primary.main,
+    cursor: 'pointer',
   },
   addVariant: {
     position: 'absolute',
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function ActionsTree() {
+export default function ActionsTree(props) {
   const classes = useStyles()
 
   const [brew] = React.useContext(BrewContext)
@@ -70,7 +71,7 @@ export default function ActionsTree() {
         :
         (<>
           <div className={classes.addVariant}><AddCircleOutlineIcon/> Variant</div>
-          <div className={classes.add}><AddCircleOutlineIcon/></div>
+          <div className={classes.add} onClick={() => {props.setOpenAction(true)}}><AddCircleOutlineIcon/></div>
         </>)
         }
       </ActionDot>
@@ -84,7 +85,7 @@ export default function ActionsTree() {
           return renderTree(action)
         })
       :
-        <div className={classes.add}><AddCircleOutlineIcon/></div>
+        <div className={classes.add} onClick={() => {props.setOpenAction(true)}}><AddCircleOutlineIcon/></div>
     }
     </ActionDot>
   )

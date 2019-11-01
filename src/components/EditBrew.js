@@ -12,17 +12,21 @@ import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core'
 import GridList from '@material-ui/core/GridList';
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import Fade from '@material-ui/core/Fade';
+import Backdrop from '@material-ui/core/Backdrop';
 
 // Local
 import BrewContext from '../firebase/brew'
 import Loader from './Loader'
 import ActionsTree from './ActionsTree'
 import BrewTile from './BrewTile'
+import EditAction from './EditAction'
 
 const useStyles = makeStyles(theme => ({
     grid: {
@@ -34,6 +38,12 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-around',
         overflow: 'hidden',
     },
+    wrap: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        textAlign:'center',
+    },
 }))
 
 export default function BrewProcesses(props) {
@@ -41,6 +51,8 @@ export default function BrewProcesses(props) {
 
     const [brew, setBrew] = React.useContext(BrewContext)
     
+    const [openAction, setOpenAction] = React.useState(false);
+
     return (
         <Container maxWidth="sm">
             <GridList className={classes.gridList}>
@@ -49,7 +61,23 @@ export default function BrewProcesses(props) {
             <Grid item xs={12} className={classes.grid}>
                 <Loader />
 
-                <ActionsTree />
+                <ActionsTree setOpenAction={setOpenAction} />
+
+                <Modal
+                    className={classes.wrap}
+                    aria-labelledby="Edit action"
+                    open={openAction}
+                    onClose={() => {setOpenAction(false)}}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500,
+                    }}
+                >
+                    <Fade in={openAction}>
+                        <EditAction />
+                    </Fade>
+                </Modal>
 
             </Grid>
             <Paper>
