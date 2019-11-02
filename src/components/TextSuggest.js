@@ -23,6 +23,8 @@ const useStyles = makeStyles(theme => ({
     zIndex: 1,
     left: 0,
     right: 0,
+    padding: 0,
+    margin: 0,
   },
   suggestion: {
     display: 'block',
@@ -35,6 +37,10 @@ const useStyles = makeStyles(theme => ({
   divider: {
     height: theme.spacing(2),
   },
+  paper: {
+    padding: 0,
+    margin: 0,
+  }
 }));
 
 export default function TextSuggest(props) {
@@ -133,7 +139,7 @@ export default function TextSuggest(props) {
           suggestion: classes.suggestion,
         }}
         renderSuggestionsContainer={options => (
-          <Paper {...options.containerProps} square>
+          <Paper className={classes.paper} {...options.containerProps} square>
             {options.children}
           </Paper>
         )}
