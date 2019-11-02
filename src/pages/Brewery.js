@@ -3,17 +3,20 @@ import StartBrew from '../components/StartBrew'
 import EditBrew from '../components/EditBrew'
 import { BrewProvider } from '../firebase/brew';
 import { ActionsProvider } from '../firebase/actions';
+import { ActionProvider } from '../firebase/action';
 
 export default function Brewery(props) {
   const brewId = props.match.params.brewId;
   return (
     <BrewProvider brewId={brewId}>
       <ActionsProvider>
-        {brewId ? 
-          <EditBrew />
-        : 
-          <StartBrew />
-        }
+        <ActionProvider>
+          {brewId ? 
+            <EditBrew />
+          : 
+            <StartBrew />
+          }
+        </ActionProvider>
       </ActionsProvider>
     </BrewProvider>
   );
