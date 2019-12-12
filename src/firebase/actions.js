@@ -14,6 +14,7 @@ export function ActionsProvider(props) {
 
   React.useEffect(() => {
     if(brewContext.brewId){
+      console.log(actions)
       setStatus(prev => ({...prev, loading: true}))
       firebase.firestore()
       .collection('actions')

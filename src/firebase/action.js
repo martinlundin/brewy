@@ -2,12 +2,14 @@ import React from 'react';
 import firebase from './app';
 import StatusContext from '../util/status'
 import BrewContext from '../firebase/brew'
+import ActionsContext from '../firebase/actions'
 
 const ActionContext = React.createContext();
 export default ActionContext;
 
 export function ActionProvider(props) {
   const [status, setStatus] = React.useContext(StatusContext)
+  const [actions, setActions] = React.useContext(ActionsContext)
   
   const startedAt = new Date();
   startedAt.setMinutes(startedAt.getMinutes() + 30);
@@ -32,7 +34,7 @@ export function ActionProvider(props) {
             let actionData = doc.data();
 
             // Make firebase date into javascript date
-            actionData.startedAt = new Date(actionData.date.seconds*1000)
+            actionData.startedAt = new Date(actionData.startedAt.seconds*1000)
             setAction(actionData)
           } 
       })
@@ -53,14 +55,15 @@ export function ActionProvider(props) {
       .collection('actions').doc(action.actionId)
       .set(action)
       .then(() => {
-          setStatus(prev => ({...prev, loading: false, error: null}))
+          setStatus(prev => ({...prev, loading: false, error: null}));
+          //setActions(prev => ([...prev, action]))
       })
       .catch(error => {
           console.error(error)
           setStatus(prev => ({...prev, loading: false, error: error.message}))
       })
 
-    } else if(action.startedAt) {
+    } else if(action.brewId) {
 
       setStatus(prev => ({...prev, loading: true}))
       firebase.firestore()
@@ -69,6 +72,7 @@ export function ActionProvider(props) {
       .then(ref => {
         // Add generated id to actionId, this will trigger another call to update the action again
         setAction({...action, actionId: ref.id})
+        setActions(prev => ([...prev, action]))
         setStatus(prev => ({...prev, loading: false, error: null}))
       })
       .catch(error => {

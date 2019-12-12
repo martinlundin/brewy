@@ -75,7 +75,7 @@ export default function BrewProcesses(props) {
                     }}
                 >
                     <Fade in={openAction}>
-                        <EditAction />
+                        <EditAction setOpenAction={setOpenAction} />
                     </Fade>
                 </Modal>
 

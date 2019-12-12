@@ -6,6 +6,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 // Local
 import ActionsContext from '../firebase/actions'
+import ActionContext from '../firebase/action'
 import BrewContext from '../firebase/brew'
 import ActionDot from './ActionDot'
 
@@ -34,8 +35,10 @@ export default function ActionsTree(props) {
 
   const [brew] = React.useContext(BrewContext)
   const [actions, setActions] = React.useContext(ActionsContext)
+  const [actionContext, setActionContext] = React.useContext(ActionContext)
+  const [action, setAction] = React.useState(actionContext)
   const [nestedActions, setNestedActions] = React.useState([])
-  
+
   // Nest data, so we can loop through it and create DOM tree
   function nest(array){
     var map = {};
@@ -64,14 +67,19 @@ export default function ActionsTree(props) {
 
   const renderTree = (action) => {  
     return (
-      <ActionDot action={action}>
+      <ActionDot action={action} key={action.actionId}>
         { 
           action.children && action.children.length > 0 ?
           action.children.map((child) => renderTree(child))
         :
         (<>
           <div className={classes.addVariant}><AddCircleOutlineIcon/> Variant</div>
-          <div className={classes.add} onClick={() => {props.setOpenAction(true)}}><AddCircleOutlineIcon/></div>
+          <div className={classes.add} onClick={() => {
+            setActionContext(prev => ({...prev, brewId: brew.brewId, parent: action.actionId}))
+            props.setOpenAction(true)}
+          }>
+            <AddCircleOutlineIcon/>
+          </div>
         </>)
         }
       </ActionDot>
