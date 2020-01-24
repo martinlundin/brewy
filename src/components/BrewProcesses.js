@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function BrewProcesses(props) {
-    const [brew, setBrew] = React.useContext(BrewContext)
+    const brew = React.useContext(BrewContext)
     const dispatch = useDispatch()
     const classes = useStyles()
     const ui = useSelector((state) => state.ui)

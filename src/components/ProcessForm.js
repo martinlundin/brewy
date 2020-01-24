@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 export default function ProcessForm(props) {
-    const [brew, setBrew] = React.useContext(BrewContext)
+    const brew = React.useContext(BrewContext)
     const classes = useStyles()
     const dispatch = useDispatch()
 

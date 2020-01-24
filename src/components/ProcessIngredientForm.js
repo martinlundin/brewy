@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => ({
 export default function ProcessIngredientForm(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [brew, setBrew] = React.useContext(BrewContext)
+  const brew = React.useContext(BrewContext)
 
   const ingredientSuggestions = [
     { label: 'Water' },
