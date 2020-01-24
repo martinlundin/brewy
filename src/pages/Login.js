@@ -67,11 +67,11 @@ function Login({ history }) {
     window.confirmationResult.confirm(code).then((response) => {
       // User signed in successfully. currentUser state will change automatically via AuthContext
       setStatus((prev) => ({ ...prev, loading: false, error: null }));
-      
+
       // If user is new, redirect it to profile page
-      if(response.additionalUserInfo.isNewUser) {
-        //Set current user before redirect to avoid auth bug
-        setCurrentUser(prev => ({...prev, ...response.user, isNewUser: true})); 
+      if (response.additionalUserInfo.isNewUser) {
+        // Set current user before redirect to avoid auth bug
+        setCurrentUser((prev) => ({ ...prev, ...response.user, isNewUser: true }));
       }
     }).catch((error) => {
       // User couldn't sign in
@@ -87,8 +87,8 @@ function Login({ history }) {
 
   React.useEffect(() => {
     // If there is a currentUser push him to frontpage
-    if (currentUser && currentUser.uid){
-      currentUser.isNewUser === true ? history.push('/profile') : history.push('/') ;
+    if (currentUser && currentUser.uid) {
+      currentUser.isNewUser === true ? history.push('/profile') : history.push('/');
     }
   }, [currentUser, history]);
 

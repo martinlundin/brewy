@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   action: {
     display: 'flex',
     flexFlow: 'row wrap',
@@ -46,23 +46,23 @@ const useStyles = makeStyles(theme => ({
     bottom: '8px',
     lineHeight: 0,
     fontSize: '10px',
-  }
-}))
+  },
+}));
 
 export default function ActionDot(props) {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const action = props.action;
+  const { action } = props;
 
   return (
     <div className={classes.action} key={action.actionId}>
       <div className={classes.dataWrap}>
         <div className={classes.circle}>
           <span className={classes.date}>
-            {action.startedAt.getDate()}      
+            {action.startedAt.getDate()}
           </span>
           <span className={classes.month}>
-            {action.startedAt.toLocaleString('default', {month: 'short'}).toLowerCase()}
+            {action.startedAt.toLocaleString('default', { month: 'short' }).toLowerCase()}
           </span>
         </div>
         <div>
@@ -73,5 +73,5 @@ export default function ActionDot(props) {
       </div>
       {props.children}
     </div>
-  )
+  );
 }

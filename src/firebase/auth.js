@@ -14,18 +14,18 @@ export function AuthProvider({ children }) {
   }, []);
 
   React.useEffect(() => {
-    if(currentUser && currentUser.uid && !currentUser.profile){
+    if (currentUser && currentUser.uid && !currentUser.profile) {
       firebase.firestore().collection('users').doc(currentUser.uid).get()
-      .then((doc) => {
-          if(doc.exists){
-            setCurrentUser(prev => ({...prev, profile: doc.data()}))
+        .then((doc) => {
+          if (doc.exists) {
+            setCurrentUser((prev) => ({ ...prev, profile: doc.data() }));
           } else {
-            console.log('Profile not found')
+            console.log('Profile not found');
           }
-      })
-      .catch(error => {
-          console.error(error)
-      })
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }, [currentUser]);
 

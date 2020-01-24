@@ -41,7 +41,7 @@ export default {
       root: {
         padding: '24px 16px',
         margin: '16px 0px',
-      }
+      },
     },
     MuiSvgIcon: {
       root: {

@@ -7,7 +7,7 @@ import Container from '@material-ui/core/Container';
 import { Typography } from '@material-ui/core';
 
 // Local
-import BreweryButton from '../components/BreweryButton'
+import BreweryButton from '../components/BreweryButton';
 
 const useStyles = makeStyles(() => ({
 

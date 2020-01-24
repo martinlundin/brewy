@@ -48,8 +48,8 @@ export default function Toast() {
       setText(status.message);
       // Autohide after 5 seconds
       setTimeout(() => {
-        setStatus((prev) => ({ ...prev, message: null}));
-      }, 5000)
+        setStatus((prev) => ({ ...prev, message: null }));
+      }, 5000);
     } else {
       setText(null);
     }
