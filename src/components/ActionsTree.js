@@ -3,12 +3,16 @@ import React from 'react';
 // Mui
 import { makeStyles } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import Fade from '@material-ui/core/Fade';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+
 
 // Local
 import ActionsContext from '../firebase/actions';
-import ActionContext from '../firebase/action';
 import BrewContext from '../firebase/brew';
 import ActionDot from './ActionDot';
+import EditAction from './EditAction';
 
 const useStyles = makeStyles((theme) => ({
   actionTree: {
@@ -33,16 +37,25 @@ const useStyles = makeStyles((theme) => ({
 export default function ActionsTree(props) {
   const classes = useStyles();
 
-  const [brew, dispatch] = React.useContext(BrewContext);
+  const { brew } = React.useContext(BrewContext);
   const [actions, setActions] = React.useContext(ActionsContext);
-  const [actionContext, setActionContext] = React.useContext(ActionContext);
-  const [action, setAction] = React.useState(actionContext);
   const [nestedActions, setNestedActions] = React.useState([]);
 
+  const [parent, setParent] = React.useState(null);
+  const [showActionPanel, setShowActionPanel] = React.useState(false);
+
+  const openEditAction = (currentParent = null) => {
+    setShowActionPanel(true);
+    setParent(currentParent);
+  };
+  const closeEditAction = () => {
+    setShowActionPanel(false);
+    setParent(null);
+  };
   // Nest data, so we can loop through it and create DOM tree
   function nest(array) {
     const map = {};
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i += i + 1) {
       const obj = array[i];
       obj.children = [];
 
@@ -61,50 +74,67 @@ export default function ActionsTree(props) {
 
   React.useEffect(() => {
     if (actions.length > 0) {
+      console.log(actions);
+      console.log(nest(actions));
       setNestedActions(nest(actions));
     }
   }, [actions]);
 
-  const renderTree = (action) => (
-    <ActionDot action={action} key={action.actionId}>
+  const renderTree = (currentAction) => (
+    <ActionDot action={currentAction} key={currentAction.actionId}>
       {
-          action.children && action.children.length > 0
-            ? action.children.map((child) => renderTree(child))
+          currentAction.children && currentAction.children.length > 0
+            ? currentAction.children.map((child) => renderTree(child))
             : (
               <>
                 <div className={classes.addVariant}>
                   <AddCircleOutlineIcon />
                   {' '}
-Variant
+                  Variant
                 </div>
-                <div
+                <button
+                  type="button"
                   className={classes.add}
                   onClick={() => {
-                    setActionContext((prev) => ({
-                      ...prev, actionId: null, type: '', brewId: brew.brewId, parent: action.actionId,
-                    }));
-                    props.setOpenAction(true);
+                    openEditAction(currentAction.actionId);
                   }}
                 >
                   <AddCircleOutlineIcon />
-                </div>
+                </button>
               </>
             )
         }
     </ActionDot>
   );
   return (
-    <ActionDot action={{ startedAt: brew.date, type: 'Started brew' }}>
-      {
+    <div>
+      <ActionDot action={{ startedAt: brew.date, type: 'Started brew' }}>
+        {
       nestedActions.length > 0
-        ? nestedActions.map((action) => renderTree(action))
+        ? nestedActions.map((currentAction) => renderTree(currentAction))
         : (
-          <div className={classes.add} onClick={() => { props.setOpenAction(true); }}>
-asddd
+          <button type="button" className={classes.add} onClick={() => { openEditAction(); }}>
             <AddCircleOutlineIcon />
-          </div>
+          </button>
         )
     }
-    </ActionDot>
+      </ActionDot>
+      <Modal
+        className={classes.wrap}
+        aria-labelledby="Edit action"
+        open={showActionPanel}
+        onClose={() => { closeEditAction(); }}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={showActionPanel}>
+          <EditAction closeEditAction={closeEditAction} parent={parent} />
+        </Fade>
+      </Modal>
+    </div>
+
   );
 }

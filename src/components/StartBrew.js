@@ -1,5 +1,4 @@
 import React from 'react';
-import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
 
 // MUI
@@ -18,17 +17,14 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Local
 import generatePattern from '../util/pattern';
-import StatusContext from '../util/status';
 import BrewContext from '../firebase/brew';
-import firebase from '../firebase/app';
 import BrewTile from './BrewTile';
 import Loader from './Loader';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   gridList: {
     display: 'flex',
     flexDirection: 'column',
@@ -57,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 function StartBrew({ history }) {
   const classes = useStyles();
 
-  const [brewContext, dispatch] = React.useContext(BrewContext);
+  const { brew: brewContext, addBrew } = React.useContext(BrewContext);
   const [brew, setBrew] = React.useState(brewContext);
 
   // Fixed select label styling
@@ -95,7 +91,7 @@ function StartBrew({ history }) {
             autoComplete="off"
             onSubmit={(e) => {
               e.preventDefault();
-              dispatch({ type: 'addBrew', brew });
+              addBrew(brew);
             }}
           >
 
@@ -145,7 +141,7 @@ function StartBrew({ history }) {
                 variant="contained"
                 type="submit"
               >
-                                Start
+                Start
                 <Loader />
               </Button>
             </FormControl>
@@ -157,9 +153,14 @@ function StartBrew({ history }) {
         <Typography variant="h5" gutterBottom>
           <InfoOutlinedIcon />
           {' '}
-Every masterpiece start somewhere
+        Every masterpiece start somewhere
         </Typography>
-        <Typography>And this is where you start yours. Give the brew a date and a category. The pattern is as a placeholder, you will be able to add an image and name the brew when it is completed.</Typography>
+        <Typography>
+            And this is where you start yours.
+            Give the brew a date and a category.
+            The pattern is as a placeholder,
+            you will be able to add an image and name the brew when it is completed.
+        </Typography>
       </Paper>
     </Container>
   );

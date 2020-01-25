@@ -49,8 +49,7 @@ const useStyles = makeStyles((theme) => ({
 export default function BrewProcesses(props) {
   const classes = useStyles();
 
-  const [brew, dispatch] = React.useContext(BrewContext);
-  const [openAction, setOpenAction] = React.useState(false);
+  const { brew } = React.useContext(BrewContext);
 
   return (
     <Container maxWidth="sm">
@@ -65,7 +64,7 @@ export default function BrewProcesses(props) {
       <Grid item xs={12} className={classes.grid}>
         <Loader />
 
-        <ActionsTree setOpenAction={setOpenAction} />
+        <ActionsTree />
 
       </Grid>
       <Paper>

@@ -6,18 +6,16 @@ import parse from 'autosuggest-highlight/parse';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import Popper from '@material-ui/core/Popper';
 import { makeStyles } from '@material-ui/core/styles';
-import { hidden } from 'ansi-colors';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     display: 'flex',
   },
   container: {
     position: 'relative',
-    },
+  },
   suggestionsContainerOpen: {
     position: 'absolute',
     zIndex: 1,
@@ -40,22 +38,24 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: 0,
     margin: 0,
-  }
+  },
 }));
 
 export default function TextSuggest(props) {
   const classes = useStyles();
 
-  const suggestions = props.suggestions;
-  
+  const { suggestions } = props;
+
   function renderInputComponent(inputProps) {
-    const { classes, inputRef = () => {}, ref, ...other } = inputProps;
-  
+    const {
+      classes, inputRef = () => {}, ref, ...other
+    } = inputProps;
+
     return (
       <TextField
         fullWidth
         InputProps={{
-          inputRef: node => {
+          inputRef: (node) => {
             ref(node);
             inputRef(node);
           },
@@ -67,15 +67,15 @@ export default function TextSuggest(props) {
       />
     );
   }
-  
+
   function renderSuggestion(suggestion, { query, isHighlighted }) {
     const matches = match(suggestion.label, query);
     const parts = parse(suggestion.label, matches);
-  
+
     return (
       <MenuItem selected={isHighlighted} component="div">
         <div>
-          {parts.map(part => (
+          {parts.map((part) => (
             <span key={part.text} style={{ fontWeight: part.highlight ? 500 : 400 }}>
               {part.text}
             </span>
@@ -84,26 +84,25 @@ export default function TextSuggest(props) {
       </MenuItem>
     );
   }
-  
+
   function getSuggestions(value) {
     const inputValue = deburr(value.trim()).toLowerCase();
     const inputLength = inputValue.length;
     let count = 0;
-  
+
     return inputLength === 0
       ? []
-      : suggestions.filter(suggestion => {
-          const keep =
-            count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
-  
-          if (keep) {
-            count += 1;
-          }
-  
-          return keep;
-        });
+      : suggestions.filter((suggestion) => {
+        const keep = count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
+
+        if (keep) {
+          count += 1;
+        }
+
+        return keep;
+      });
   }
-  
+
   function getSuggestionValue(suggestion) {
     return suggestion.label;
   }
@@ -124,25 +123,25 @@ export default function TextSuggest(props) {
     renderSuggestion,
   };
   return (
-      <Autosuggest
-        {...autosuggestProps}
-        inputProps={{
-          classes,
-          label: props.label,
-          value: props.value,
-          onChange: props.handleChange(),
-        }}
-        theme={{
-          container: `${props.className} ${classes.container}`,
-          suggestionsContainerOpen: classes.suggestionsContainerOpen,
-          suggestionsList: classes.suggestionsList,
-          suggestion: classes.suggestion,
-        }}
-        renderSuggestionsContainer={options => (
-          <Paper className={classes.paper} {...options.containerProps} square>
-            {options.children}
-          </Paper>
-        )}
-      />
+    <Autosuggest
+      {...autosuggestProps}
+      inputProps={{
+        classes,
+        label: props.label,
+        value: props.value,
+        onChange: props.handleChange(),
+      }}
+      theme={{
+        container: `${props.className} ${classes.container}`,
+        suggestionsContainerOpen: classes.suggestionsContainerOpen,
+        suggestionsList: classes.suggestionsList,
+        suggestion: classes.suggestion,
+      }}
+      renderSuggestionsContainer={(options) => (
+        <Paper className={classes.paper} {...options.containerProps} square>
+          {options.children}
+        </Paper>
+      )}
+    />
   );
 }

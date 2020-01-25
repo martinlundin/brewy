@@ -8,18 +8,16 @@ export default ActionsContext;
 
 export function ActionsProvider(props) {
   const [status, setStatus] = React.useContext(StatusContext);
-  const brewContext = React.useContext(BrewContext);
+  const { brew } = React.useContext(BrewContext);
 
   const [actions, setActions] = React.useState([]);
 
   React.useEffect(() => {
-    if (brewContext.brewId) {
-      console.log(actions);
+    if (brew.brewId) {
       setStatus((prev) => ({ ...prev, loading: true }));
       firebase.firestore()
         .collection('actions')
-        .orderBy('startedAt', 'asc')
-        .where('brewId', '==', brewContext.brewId)
+        .where('brewId', '==', brew.brewId)
         .get()
         .then((snapshot) => {
           if (!snapshot.empty) {
@@ -41,7 +39,7 @@ export function ActionsProvider(props) {
           setStatus((prev) => ({ ...prev, loading: false, error: error.message }));
         });
     }
-  }, [brewContext]);
+  }, [brew]);
 
   return (
     <ActionsContext.Provider value={[actions, setActions]}>

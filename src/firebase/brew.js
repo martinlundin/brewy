@@ -6,13 +6,12 @@ import generatePattern from '../util/pattern';
 const BrewContext = React.createContext();
 export default BrewContext;
 
-export function BrewProvider(props) {
-  const { children } = props;
-  const [status, setStatus] = React.useContext(StatusContext);
+const date = new Date();
+date.setMinutes(date.getMinutes() + 30);
+date.setMinutes(0);
 
-  const date = new Date();
-  date.setMinutes(date.getMinutes() + 30);
-  date.setMinutes(0);
+export function BrewProvider(props) {
+  const [status, setStatus] = React.useContext(StatusContext);
 
   const initialBrew = {
     brewId: null,
@@ -21,6 +20,7 @@ export function BrewProvider(props) {
     category: '',
     pattern: generatePattern(),
   };
+  const [brew, setBrew] = React.useState(initialBrew);
 
   const getBrew = (brewId) => {
     setStatus((prev) => ({ ...prev, loading: true }));
@@ -35,7 +35,8 @@ export function BrewProvider(props) {
 
           // Make firebase date into javascript date
           brewData.date = new Date(brewData.date.seconds * 1000);
-          return brewData;
+          console.log(brewData);
+          setBrew(brewData);
         }
         return null;
       })
@@ -45,13 +46,14 @@ export function BrewProvider(props) {
       });
   };
 
-  const updateBrew = (brew) => {
+  const updateBrew = (updatedBrew) => {
     setStatus((prev) => ({ ...prev, loading: true }));
     return firebase.firestore()
-      .collection('brews').doc(brew.brewId)
-      .set(brew)
+      .collection('brews').doc(updatedBrew.brewId)
+      .set(updatedBrew)
       .then(() => {
         setStatus((prev) => ({ ...prev, loading: false, error: null }));
+        setBrew(updatedBrew);
       })
       .catch((error) => {
         setStatus((prev) => ({ ...prev, loading: false, error: error.message }));
@@ -59,19 +61,15 @@ export function BrewProvider(props) {
       });
   };
 
-  const addBrew = (brew) => {
+  const addBrew = (newBrew) => {
     setStatus((prev) => ({ ...prev, loading: true }));
     return firebase.firestore()
       .collection('brews')
-      .add(brew)
+      .add(newBrew)
       .then((ref) => {
-        // Add generated id to brewId
         setStatus((prev) => ({ ...prev, loading: false, error: null }));
-        const dbBrew = { ...brew, brewId: ref.id };
-        dispatch({
-          type: 'setStateBrew',
-          brew: dbBrew,
-        });
+        // Add generated id to brewId and update it
+        updateBrew({ ...newBrew, brewId: ref.id });
       })
       .catch((error) => {
         setStatus((prev) => ({ ...prev, loading: false, error: error.message }));
@@ -79,38 +77,21 @@ export function BrewProvider(props) {
       });
   };
 
-  const [brew, dispatch] = React.useReducer((state, action) => {
-    switch (action.type) {
-      case 'setStateBrew':
-        return { ...action.brew };
-      case 'addBrew':
-        addBrew(action.brew);
-        return state;
-      case 'updateBrew':
-        updateBrew(action.brew);
-        return state;
-      default:
-        throw new Error(`unkown actiontype: ${action.type}`);
-    }
-  }, initialBrew);
-
   React.useEffect(() => {
-    async function fetchFromDb() {
-      const { brewId } = props;
-      if (brewId) {
-        const dbBrew = await getBrew(brewId);
-        dispatch({
-          type: 'setStateBrew',
-          brew: dbBrew,
-        });
-      }
+    if (props.brewId) {
+      getBrew(props.brewId);
     }
-    fetchFromDb();
   }, []);
+  React.useEffect(() => {
+    console.log(brew);
+  }, [brew]);
 
   return (
-    <BrewContext.Provider value={[brew, dispatch]}>
-      {children}
+    <BrewContext.Provider value={{
+      brew, getBrew, addBrew, updateBrew,
+    }}
+    >
+      {props.children}
     </BrewContext.Provider>
   );
 }

@@ -28,9 +28,11 @@ const useStyles = makeStyles((theme) => ({
 export default function EditAction(props) {
   const classes = useStyles();
 
-  const brew = React.useContext(BrewContext);
-  const [actionContext, setActionContext] = React.useContext(ActionContext);
+  const { brew } = React.useContext(BrewContext);
+
+  const { action: actionContext, addAction } = React.useContext(ActionContext);
   const [action, setAction] = React.useState(actionContext);
+
 
   const typeSuggestion = [
     { label: 'Fermentation' },
@@ -47,22 +49,17 @@ export default function EditAction(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setActionContext(action);
-    props.setOpenAction(false);
+    addAction(action);
+    props.closeEditAction();
   };
 
   React.useEffect(() => {
-    setAction(actionContext);
-  }, [actionContext]);
-
-  React.useEffect(() => {
-    if (brew.brewId) {
-      setAction((prev) => ({ ...prev, brewId: brew.brewId }));
-    }
+    if (brew.brewId) setAction((prev) => ({ ...prev, brewId: brew.brewId }));
+    if (props.parent) setAction((prev) => ({ ...prev, parent: props.parent }));
   }, [brew]);
 
   React.useEffect(() => () => {
-    setAction({});
+    setAction((prev) => ({}));
   }, []);
 
   return (
@@ -95,10 +92,9 @@ export default function EditAction(props) {
                 variant="contained"
                 type="submit"
               >
-                      Add action
+                      Add actiona
               </Button>
             </FormControl>
-
           </form>
         </Grid>
       </Paper>
