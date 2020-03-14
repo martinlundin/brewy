@@ -13,6 +13,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import StatusContext from '../util/status';
 
 const useStyles = makeStyles((theme) => ({
+  toast: {
+    flexWrap: 'nowrap',
+  },
   error: {
     backgroundColor: theme.palette.error.main,
     color: theme.palette.error.contrastText,
@@ -28,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   message: {
     display: 'flex',
     alignItems: 'center',
+    textAlign: 'left',
     fontSize: 14,
   },
 }));
@@ -64,7 +68,7 @@ export default function Toast() {
       open={!!text}
     >
       <SnackbarContent
-        className={classes[variant]}
+        className={[classes.toast, classes[variant]]}
         aria-describedby="client-snackbar"
         message={(
           <span id="client-snackbar" className={classes.message}>
